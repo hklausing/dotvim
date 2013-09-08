@@ -7,10 +7,9 @@
 " 'compatible' option.
 
 " Manage the runtimepat
-"call pathogen#infect()
-call pathogen#runtime_append_all_bundles()
-"call pathogen#infect()
-call pathogen#helptags()
+"call pathogen#runtime_append_all_bundles()
+call pathogen#infect()
+"call pathogen#helptags()
 
 " This line should not be removed as it ensures that various options are
 " properly set to work with the Vim-related packages available in Debian.
