@@ -1,14 +1,9 @@
-" All system-wide defaults are set in $VIMRUNTIME/debian.vim (usually just
-" /usr/share/vim/vimcurrent/debian.vim) and sourced by the call to :runtime
-" you can find below.  If you wish to change any of those settings, you should
-" do it in this file (/etc/vim/vimrc), since debian.vim will be overwritten
-" everytime an upgrade of the vim packages is performed.  It is recommended to
-" make changes after sourcing debian.vim since it alters the value of the
-" 'compatible' option.
-
+filetype off
+set nocompatible
 " Manage the runtimepat
 "call pathogen#runtime_append_all_bundles()
 call pathogen#infect()
+"call pathogen#infect('~/.vim/bundle')
 "call pathogen#helptags()
 
 " This line should not be removed as it ensures that various options are
@@ -39,7 +34,7 @@ endif
 " Uncomment the following to have Vim load indentation rules and plugins
 " according to the detected filetype.
 if has("autocmd")
-  filetype plugin indent on
+    filetype plugin indent on
 endif
 
 " The following are commented out as they cause vim to behave a lot
@@ -50,7 +45,7 @@ endif
 "set smartcase		" Do smart case matching
 "set incsearch		" Incremental search
 "set autowrite		" Automatically save before commands like :next and :make
-"set hidden             " Hide buffers when they are abandoned
+set hidden             " Hide buffers when they are abandoned
 set mouse=a		" Enable mouse usage (all modes)
 
 " Source a global configuration file if available
@@ -66,4 +61,4 @@ set number		" sho line number by default
 " color scheme
 color desert
 
-
+set runtimepath+=~/.vim/bundle/fugitive
