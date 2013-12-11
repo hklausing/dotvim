@@ -11,3 +11,18 @@ Switch to the `~/.vim` directory, and fetch submodules:
     cd ~/.vim
     git submodule init
     git submodule update
+
+
+Command-T
+---------
+
+Prepare Command-t installation on Ubunty based systems:
+
+    $sudo apt-get install ruby-dev
+
+Build vim module:
+
+    $ cd ~/.vim/ruby/command-t
+    $ ruby extconf.rb
+    $ make
+

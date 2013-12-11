@@ -1,0 +1,13 @@
+# .gitignore
+#
+###############
+
+# Temporary files
+*.o
+
+# Build files
+*.so
+*.log
+
+# Other files
+*.vba

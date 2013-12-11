@@ -34,7 +34,9 @@
 "    -> Moving around, tabs and buffers
 "    -> Status line
 "    -> Editing mappings
+"    -> Function key mappings
 "    -> vimgrep searching and cope displaying
+"    -> Template handling
 "    -> Spell checking
 "    -> Misc
 "    -> Helper functions
@@ -309,9 +311,6 @@ if has("mac") || has("macunix")
     vmap <D-k> <M-k>
 endif
 
-" toggle line numbers
-map <F5> :set number!<cr>
-
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
 func! DeleteTrailingWS()
     exe "normal mz"
@@ -320,6 +319,19 @@ func! DeleteTrailingWS()
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Function key mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" open vertical explorer window
+map <F2> :Vexplore<cr>
+
+" toggle line numbers
+map <F5> :set number!<cr>
+
 
 
 
@@ -353,6 +365,15 @@ map <leader>n :cn<cr>
 " To go to the previous search results do:
 "   <leader>p
 map <leader>p :cp<cr>
+
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Template handling
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" define the template names
+autocmd BufNewFile * silent! 0r ~/.vim/templates/%:e.template
 
 
 
