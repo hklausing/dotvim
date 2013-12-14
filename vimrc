@@ -265,6 +265,8 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
+" Press <leader>0 to turn off highlighting and clear any message already displayed.
+nnoremap <silent> <unique> <leader>0 :nohlsearch<CR>
 
 
 

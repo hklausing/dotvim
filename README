@@ -1,20 +1,33 @@
-Installation:
+Installation
+------------
 
-    git clone https://github.com/Daderus/dotvim.git ~/.vim
+    $ git clone https://github.com/Daderus/dotvim.git ~/.vim
 
 Create symlinks:
 
-    ln -s ~/.vim/vimrc ~/.vimrc
+    $ ln -s ~/.vim/vimrc ~/.vimrc
 
 Switch to the `~/.vim` directory, and fetch submodules:
 
-    cd ~/.vim
-    git submodule init
-    git submodule update
+    $ cd ~/.vim
+    $ git submodule init
+    $ git submodule update
 
 
-Command-T
----------
+Easy installation
+-----------------
+
+It is possible to start a script after git clone or pull to execute
+needed installtion steps.
+    
+    $ cd ~/.vim
+    $ ./install.sh
+
+
+Plugin: Command-T
+-----------------
+
+Search file names quickly by typing parts of file name.
 
 Prepare Command-t installation on Ubunty based systems:
 
@@ -25,4 +38,58 @@ Build vim module:
     $ cd ~/.vim/ruby/command-t
     $ ruby extconf.rb
     $ make
+
+Key mapping:
+
+<leader>t       -> opens the commandt window
+
+
+Plugin: Occur
+-------------
+
+Searchs text parts in current and in all open buffers. The found lines 
+can be selected to jump to it.
+
+Installation is done by git clone or pull
+
+Key mapping:
+
+<leader>ft      -> Find selected Text in current buffer
+<leader>fb      -> Find selected text in all Buffers
+<leader>fu      -> Find word Under cursor in all buffers
+
+
+Plugin LustyExplorer
+--------------------
+
+LustyExplorer is a fast and responsive way to manage files and buffers 
+in Vim.  It includes a filesystem explorer, a buffer switcher, and a 
+buffer grep for searching through and switching between files and buffers 
+quickly, all through a mostly common interface. 
+
+Installation is done by copying the file 
+https://raw.github.com/sjbach/lusty/master/plugin/lusty-explorer.vim
+to ~/.vim/plugin
+
+Key mapping:
+<Leader>lf      -> Opens filesystem explorer.
+<Leader>lr      -> Opens filesystem explorer at the directory of the current file.
+<Leader>lb      -> Opens buffer explorer.
+<Leader>lg      -> Opens buffer grep.
+
+
+Plugin: ack.vim
+----------------
+
+This plugin is a front for the Perl module App::Ack. Ack can be used as 
+a replacement for 99% of the uses of grep. This plugin will allow you to 
+run ack from vim, and shows the results in a split window.
+
+Installation
+- Covered by script install.sh
+
+Key mapping:
+- not done yet
+
+
 

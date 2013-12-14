@@ -1,0 +1,75 @@
+#!/bin/bash
+#
+# File          sh.template
+# Author        H. Klausing
+# Creation      2013-12-12
+#
+# Description   what is this script doing
+#
+################################################################################
+
+
+scriptname="sh_template"
+
+### functions
+function usage
+{
+    echo -e "usage: $scriptname MANDATORY [OPTION]\n"
+    echo -e "MANDATORY mandatory parameter:"
+    echo -e "  -m,  --mandatory  VAL  The desc of the mandatory parameter\n"
+    echo -e "OPTION optional parameter:\n"
+    echo -e "  -h,  --help            Prints this help"
+    echo -e "  -o1, --optional1       The optional1 parameter"
+    echo -e "  -o2, --optional2 VAL   The optional2 parameter\n"
+    echo -e "EXAMPLE:"
+    echo -e "  $scriptname -m mandatory -o1 opt1"
+}
+
+# more...
+#####
+
+### Main
+
+if [ $# == 0 ]; then
+    echo "Called with no parameter!"
+    usage
+    exit 1
+fi
+
+mand=
+opt1="false" # or use 1 and 0, with default 0
+opt2="defaultValue"
+
+# parameter while-loop
+while [ "$1" != "" ];
+do
+    case $1 in
+   -m  | --mandatory )    shift
+                          mand=$1
+                ;;
+   -o1 | --optional1 )    opt1="true"
+                          ;;
+   -o2 | --optional2 )    shift
+                          opt2=$1
+                ;;
+   -h  | --help )         usage
+                          exit
+                ;;
+   *)                     usage
+                          echo "The parameter $1 is not allowed"
+                          exit 1 # error
+                ;;
+    esac
+    shift
+done
+
+
+if [ "$mand" == "" ]; then
+    echo "mandatroy parameter is missing"
+    usage
+   
+    exit 1 # error
+fi
+
+echo "params: $mand, $opt1, $opt2"
+#####
