@@ -38,6 +38,7 @@
 "    -> vimgrep searching and cope displaying
 "    -> Template handling
 "    -> Spell checking
+"    -> Perl related settings
 "    -> Misc
 "    -> Helper functions
 "
@@ -266,7 +267,7 @@ autocmd BufReadPost *
 set viminfo^=%
 
 " Press <leader>0 to turn off highlighting and clear any message already displayed.
-nnoremap <silent> <unique> <leader>0 :nohlsearch<CR>
+nnoremap <silent> <unique> <leader>- :nohlsearch<CR>
 
 
 
@@ -391,6 +392,15 @@ map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
+
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Perl related settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Looks up perl command under cursor when K is pressed
+set keywordprg=perldoc\ -f
 
 
 

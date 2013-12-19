@@ -7,7 +7,8 @@
 # Description   This script executes required steps to install a vim 
 #               environment with components that a delivert with this 
 #               repository content.
-#               It is required that vim is already installed.
+#               It is required that vim is already installed:
+#               	apt-get install vim-nox
 #
 ################################################################################
 
@@ -15,6 +16,51 @@
 scriptname="install.sh"
 
 ### functions
+
+package_manager_updated=0		# flag must be 0 to do update PM if required
+function updatePackageManager
+{
+	[ $package_manager_updated ] && return
+	# update package management; refresh it if the data are older than 1h.
+	last_execution=$(stat -c %Y /var/cache/apt/pkgcache.bin)
+	now=$(date +%s)
+	if [ $(($now - $last_execution)) -gt 3600 ]; then
+		sudo apt-get update
+		sudo apt-get -y upgrade
+	fi
+	package_manager_updated=1
+}
+
+
+# Check the status of the installation of an given package and 
+# return the result.
+# Param:	name of package
+# Return:	0= package not installed
+#			1= package installed
+function isPackageInstalled
+{
+	local package=$1
+	out=$(dpkg --get-selections | grep -o "^${package}")
+	if [ -z "$out" ]; then
+		echo "0"
+	else
+		echo "1"
+	fi
+}
+
+
+# check if given package is not installed 
+function installPackage
+{
+	local package=$1
+	if [ "$(isPackageInstalled $package)" == "0" ]; then
+		updatePackageManager
+		sudo apt-get install -y $package
+	else
+		echo "package $package is already installed"
+	fi
+}
+
 
 function setCorrectWorkingDir
 {
@@ -31,6 +77,7 @@ function setCorrectWorkingDir
     echo "directory ~/.vim is existing - ok"
 }
 
+
 function setupVimrcFile
 {
     # check if source file is existing
@@ -46,21 +93,18 @@ function setupVimrcFile
 
 }
 
+
 function setupPlugin_CommandT
 {
     # test if vim supports ruby
-    result=`vim --version|grep +ruby`
+    result=$(vim --version | grep +ruby)
     if [ "$result" == "" ]; then
         echo "vim does not supprt ruby - Command-T not installed."
         return
     fi
 
     # check if ruby is installed (for ubuntu systems)
-    package='ruby-dev'
-    result=`dpkg-query -W -f='${Status}' $package | grep installed`
-    if [ "$result" == "" ]; then
-       sudo apt-get -Y install $package 
-    fi
+    installPackage ruby1.9.1-full
 
     #
     path="ruby/command-t"
@@ -81,27 +125,21 @@ function setupPlugin_CommandT
     echo "Command-T installed."
 }
 
+
 function setupPlugin_AckVim
 {
     # check if required ack.vim file existing
-    checkfile="~/.vim/plugin/ack.vim"
+    checkfile="$HOME/.vim/plugin/ack.vim"
     if [ ! -f $checkfile ]; then
         echo "ack.vim cannot installed: missing file: $checkfile"
     fi
-    checkfile="~/.vim/doc/ack.txt"
+    checkfile="$HOME/.vim/doc/ack.txt"
     if [ ! -f $checkfile ]; then
         echo "ack.vim cannot installed: missing file: $checkfile"
     fi
 
     # check if ack-grep is installed (for ubuntu systems)
-    package='ack-grep'
-    result=`dpkg-query -W -f='${Status}' $package | grep installed`
-    if [ "$result" == "" ]; then
-       sudo apt-get -Y install $package 
-       echo "package: $package is installed"
-   else
-       echo "package: $package was already installed"
-    fi
+    installPackage ack-grep
 
     # set a link to ack-grep for ack.vim
     if [ ! -L /usr/bin/ack ]; then
@@ -110,8 +148,8 @@ function setupPlugin_AckVim
     fi
 
     # create a .ackrc file if it is not existing
-    file="~/.ackrc"
-    if [ ! -f $file ]; then
+    file="$HOME/.ackrc"
+    if [ ! -e $file ]; then
         tee $file <<EOF
 # Always sort the files
 --sort-files
@@ -121,10 +159,24 @@ function setupPlugin_AckVim
 
 # Use "less -r" as my pager
 --pager=less -r
-
 EOF
     fi
 }
+
+
+function checkColorSupport
+{
+    if [[ $(tput colors) == 256 && $TERM == "xterm-256color" ]]; then
+        echo "terminal supports 256 colors"
+    else
+        echo "!!!!!!!!"
+        echo "Terminal does not support 256 colors."
+        echo "Add the following line the .bashrc to enable the 256 color support:"
+        echo "[[ -n \"$DISPLAY\" && \"$TERM\" = \"xterm\" ]] && export TERM=xterm-256color"
+        echo "!!!!!!!!"
+    fi
+}
+
 
 function usage
 {
@@ -154,9 +206,11 @@ done
 
 
 setCorrectWorkingDir
+installPackage vim-nox          # take care correct vim is installed
 setupVimrcFile                  # creates a link of vimrc to the user root directory
 setupPlugin_CommandT            # installs ruby if possible and compiles the required sources
 setupPlugin_AckVim              # installs Ack.vim to system
+checkColorSupport               #  
 
 exit 0
 #####
