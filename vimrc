@@ -49,6 +49,12 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use pathogen to easily modify the runtime path to include all
+" plugins under the ~/.vim/bundle directory
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+execute pathogen#infect()
+
 " Sets how many lines of history VIM has to remember
 set history=700
 
@@ -267,7 +273,7 @@ autocmd BufReadPost *
 set viminfo^=%
 
 " Press <leader>0 to turn off highlighting and clear any message already displayed.
-nnoremap <silent> <unique> <leader>- :nohlsearch<CR>
+"nnoremap <silent> <unique> <leader>-- :nohlsearch<CR>
 
 
 
@@ -335,6 +341,10 @@ map <F2> :Vexplore<cr>
 " toggle line numbers
 map <F5> :set number!<cr>
 
+" Quickly edit the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+" Quickly reload the vimrc file
+nmap <silent> <leader>rv :so $MYVIMRC<CR>
 
 
 
@@ -416,6 +426,8 @@ map <leader>q :e ~/buffer<cr>
 
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
+
+let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 
 
 

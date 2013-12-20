@@ -3,10 +3,10 @@
 ###############
 
 # Temporary files
-*.o
+*.swp
 
 # Build files
-*.so
+/.netrwhist
 *.log
 
 # Other files

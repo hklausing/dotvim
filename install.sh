@@ -171,7 +171,7 @@ function checkColorSupport
     else
         echo "!!!!!!!!"
         echo "Terminal does not support 256 colors."
-        echo "Add the following line the .bashrc to enable the 256 color support:"
+        echo "Add the following line to .bashrc to enable the 256 color support:"
         echo "[[ -n \"$DISPLAY\" && \"$TERM\" = \"xterm\" ]] && export TERM=xterm-256color"
         echo "!!!!!!!!"
     fi
