@@ -138,17 +138,10 @@ function setupPlugin_AckVim
     fi
 
     # get package date of ack.vim
-    git submodule update --init
-#    # check if required ack.vim file existing
-#    checkfile="$HOME/.vim/plugin/ack.vim"
-#    if [ ! -f $checkfile ]; then
-#        echo "ack.vim cannot installed: missing file: $checkfile"
-#    fi
-#    checkfile="$HOME/.vim/doc/ack.txt"
-#    if [ ! -f $checkfile ]; then
-#        echo "ack.vim cannot installed: missing file: $checkfile"
-#    fi
-#
+    setCorrectWorkingDir        # take care working tree is correct for git
+    git submodule init
+    git submodule update
+
     # create a .ackrc file if it is not existing
     file="$HOME/.ackrc"
     if [ ! -e $file ]; then

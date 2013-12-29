@@ -275,6 +275,18 @@ set viminfo^=%
 " Press <leader>0 to turn off highlighting and clear any message already displayed.
 "nnoremap <silent> <unique> <leader>-- :nohlsearch<CR>
 
+" quick move of the current line down
+nnoremap <C-j> :m .+1<CR>==
+inoremap <C-j> <Esc>:m .+1<CR>==gi
+vnoremap <C-j> :m '>+1<CR>gv=gv
+
+" quick move of the current line up
+nnoremap <C-k> :m .-2<CR>==
+inoremap <C-k> <Esc>:m .-2<CR>==gi
+vnoremap <C-k> :m '<-2<CR>gv=gv
+
+" makes changes to files that have read-only permissions for current user/group
+cmap w!! %!sudo tee > /dev/null %
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -305,20 +317,20 @@ set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap VIM 0 to first non-blank character
-map 0 ^
+"map 0 ^
 
-" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+"" Move a line of text using ALT+[jk] or Command+[jk] on mac
+"nmap <M-j> mz:m+<cr>`z
+"nmap <M-k> mz:m-2<cr>`z
+"vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+"vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
-if has("mac") || has("macunix")
-    nmap <D-j> <M-j>
-    nmap <D-k> <M-k>
-    vmap <D-j> <M-j>
-    vmap <D-k> <M-k>
-endif
+"if has("mac") || has("macunix")
+"   nmap <D-j> <M-j>
+"   nmap <D-k> <M-k>
+"   vmap <D-j> <M-j>
+"   vmap <D-k> <M-k>
+"endif
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
 func! DeleteTrailingWS()
@@ -342,9 +354,9 @@ map <F2> :Vexplore<cr>
 map <F5> :set number!<cr>
 
 " Quickly edit the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>ev :edit $MYVIMRC<CR>
 " Quickly reload the vimrc file
-nmap <silent> <leader>rv :so $MYVIMRC<CR>
+nmap <silent> <leader>rv :source $MYVIMRC<CR>
 
 
 
