@@ -1,9 +1,0 @@
-[submodule "bundle/ack.vim"]
-	path = bundle/ack.vim
-	url = https://github.com/tyok/ack.vim.git
-[submodule "bundle/vim-fugitive"]
-	path = bundle/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive.git
-[submodule "bundle/lusty"]
-	path = bundle/lusty
-	url = https://github.com/sjbach/lusty.git
