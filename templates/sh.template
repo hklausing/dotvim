@@ -1,75 +1,184 @@
 #!/bin/bash
 #
-# File          sh.template
+# File          template.sh
 # Author        H. Klausing
-# Creation      2013-12-12
+# Creation      2015-10-11
 #
-# Description   what is this script doing
+# Description   This is a template script with some useful content that can be
+#               easily take for final script function.
+#               Start requirements: option -a, -b or extra data is required.
 #
 ################################################################################
 
 
-scriptname="sh_template"
+readonly FULL_NAME=$0
+readonly SCRIPT_NAME=$(basename $FULL_NAME)
+readonly LOCK_FILE=/tmp/$SCRIPT_NAME.lock
+readonly VERSION=0.0.1
 
-### functions
-function usage
+# list of required command for early check
+readonly NEEDED_COMMANDS="rm sed"
+
+
+################################################################################
+### Functions
+################################################################################
+
+
+#-------------------------------------------------------------------------------
+# Shows a script help information
+# Param1:   -
+# Return:   -
+#-------------------------------------------------------------------------------
+printUsage()
 {
-    echo -e "usage: $scriptname MANDATORY [OPTION]\n"
-    echo -e "MANDATORY mandatory parameter:"
-    echo -e "  -m,  --mandatory  VAL  The desc of the mandatory parameter\n"
-    echo -e "OPTION optional parameter:\n"
-    echo -e "  -h,  --help            Prints this help"
-    echo -e "  -o1, --optional1       The optional1 parameter"
-    echo -e "  -o2, --optional2 VAL   The optional2 parameter\n"
-    echo -e "EXAMPLE:"
-    echo -e "  $scriptname -m mandatory -o1 opt1"
+    cat <<END
+usage: $SCRIPT_NAME [OPTION] ...
+
+OPTION optional parameter:
+  -a        The optional parameter 'a'
+  -b value  The optional parameter 'b' with required value
+  -h        Print this help
+  -v        Increment verbose level
+  -V        Print script version
+
+EXAMPLE:
+  $SCRIPT_NAME -b optb
+END
 }
 
-# more...
-#####
+#-------------------------------------------------------------------------------
+# Shows an error text on STDERR
+# Param1:   text information
+# Return:   -
+#-------------------------------------------------------------------------------
+printError()
+{
+    echo "ERROR: $1" >&2
+}
 
-### Main
+#-------------------------------------------------------------------------------
+# Check if all needed commands existing on the system. The variable 
+# needed_commands list all required commands.
+# Param1:   -
+# Return:   -
+#-------------------------------------------------------------------------------
+checkNeededCommands()
+{
+    # counter is used to find missing behaviours
+    missing_counter=0
 
-if [ $# == 0 ]; then
-    echo "Called with no parameter!"
-    usage
+    # scan each command
+    for needed_command in $NEEDED_COMMANDS; do
+
+        if ! hash "$needed_command" >/dev/null 2>&1; then
+            printError "Command not found in PATH: $needed_command"
+            ((missing_counter++))
+        fi
+
+    done
+
+    # check count result
+    if ((missing_counter > 0)); then
+        printError "Minimum $missing_counter commands are missing in PATH, aborting!"
+        exit 1
+    fi
+
+}
+
+#-------------------------------------------------------------------------------
+# Cleanup some stuff before the script will be stopped.
+# Param1:   -
+# Return:   -
+#-------------------------------------------------------------------------------
+finishScript()
+{
+    # delete lock file
+    rm -f $LOCK_FILE
+}
+
+
+
+
+################################################################################
+### Main script entry 
+################################################################################
+
+# verify that all commands are available
+checkNeededCommands
+
+options_found=0         # will be incremented be each found option
+opt_a=0                 # default 0
+opt_b="defaultValue"    # default test info
+opt_verbose=0           # default value 0
+
+# parameter while-loop
+while getopts :ab:hvV optname; do
+    (( options_found++ ))
+    case ${optname} in
+        a)  
+            opt_a=1;
+            ;;
+        b)  
+            opt_b=$OPTARG;
+            ;;
+        h)  
+            printUsage;
+            exit 0; 
+            ;;
+        v)  
+            (( opt_verbose++ ));
+            ;;
+        V)  
+            echo "Version ${VERSION}";
+            exit 0
+            ;;
+        \?)
+            printError "Unknown argument -$OPTARG while processing options!";
+            exit 1;         # error
+            ;;
+        :)
+            printError "Option -$OPTARG requires an argument.";
+            exit 1;         # error
+            ;;
+    esac
+done
+
+# get a list of extra parameters
+shift $(($OPTIND - 1))
+OPTEXTRA=$@
+
+# check if one or more options were found
+if [[ $options_found -eq 0 && -z "$OPTEXTRA" ]]; then
+    printError "Called with no parameter!"
     exit 1
 fi
 
-mand=
-opt1="false" # or use 1 and 0, with default 0
-opt2="defaultValue"
-
-# parameter while-loop
-while [ "$1" != "" ];
-do
-    case $1 in
-   -m  | --mandatory )    shift
-                          mand=$1
-                ;;
-   -o1 | --optional1 )    opt1="true"
-                          ;;
-   -o2 | --optional2 )    shift
-                          opt2=$1
-                ;;
-   -h  | --help )         usage
-                          exit
-                ;;
-   *)                     usage
-                          echo "The parameter $1 is not allowed"
-                          exit 1 # error
-                ;;
-    esac
-    shift
-done
-
-
-if [ "$mand" == "" ]; then
-    echo "mandatroy parameter is missing"
-    usage
-   
-    exit 1 # error
+# Locks script execution
+if [ -f "$LOCK_FILE" ]; then
+   printError "Script is already running"
+   exit 1
 fi
 
-echo "params: $mand, $opt1, $opt2"
-#####
+# delete lock file if the script recieved the signal EXIT
+trap finishScript EXIT
+
+# create lock file
+touch $LOCK_FILE
+
+
+
+################################################################################
+### Start with script body
+################################################################################
+
+
+
+# show options
+echo "option: opt_a=$opt_a, opt_b=$opt_b, opt_verbose=$opt_verbose"
+[ -n "$OPTEXTRA" ] && echo "extras: ${OPTEXTRA[*]}"
+
+
+exit 0
+###
+

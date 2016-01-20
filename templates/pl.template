@@ -1,6 +1,643 @@
 #!/usr/bin/perl
+###########################################################################
+#  Script     : template.pl
+#  Author     : H. Klausing (h.klausing at gmx dot de)
+#  Description: working template for fast production rollout
+###########################################################################
+#  Update-List:
+#  2015-08-01   v0.001 H. Klausing
+#               initial version
+###########################################################################
+# Purpose:
+# - create a working template with logging, and emailed
+#   reports to make production development of scripts
+#   faster
+# Requirements:
+# - error code checking
+# - different debugging/logging levels
+# - option for email execution report delivery
+# - option for email error delivery
+# - option for TEST (go through motions and logging with no
+#   actual changes made
+# Method:
+# - make a script 'shell' with some of the standard options
+#   already implemented
+# Syntax: template -h|--help
+#         template --man
+#         template --version
+#         template [-m email] [-e email] [-t] [-d]
+#         template [-m email] [-e email] [-t] [-v]
+# Notes:
+# - not happy with execution logging or failure checking
+# Tidy:
+# -l=128 -pt=2 -sbt=2 -bt=2 -bbt=2 -csc -csci=28 -bbc -bbb -lbl=1 -sob -bar -nsfs -nolq -iscl -sbc -ce -anl -blbs=4
 #
+###########################################################################
+# ToDo:
+###########################################################################
+
+######################################
+####   Opening Initializations    ####
+######################################
+
+package Main;
+
 use strict;
+use warnings;
+use English;
+use utf8;
+use Carp;
+use feature qw( state );
+use Getopt::Long;
+use File::Basename;
+use Cwd;
+use POSIX;
+use Pod::Usage;
+use Log::Log4perl qw(:easy);
+#
+#
+#
+#--- constants -------------------------
+my $VERSION     = '0.001';                        # major and minor releases, and sub-minor
+my $RELEASEDATE = '2015-10-11';
+my $SCRIPTNAME  = File::Basename::basename($PROGRAM_NAME);
+use constant {
+    OK                              => 0,
+    SIG_INT                         => 1,
+    SIG_PIPE                        => 2,
+    ERR_WRONG_ARGUMENT_FOUND        => 3,
+    ERR_MISSING_SETUP_DATA_FILES    => 4,
+    ERR_NO_SETUP_DATA_FILES         => 5,
+};
+use constant {
+    VQUIET  => 0,
+    VNORMAL => 1,
+    VINFO   => 2,
+    VDEBUG  => 3,
+};
+
+my $exit_status = 0;
+delete @ENV{qw(IFS CDPATH ENV BASH_ENV)};
+$ENV{PATH}  = '/bin:/usr/bin';
+$SIG{INT}   = sub { $exit_status = SIG_INT; die };
+$SIG{PIPE}  = sub { $exit_status = SIG_PIPE; die };
+# collect script environment information
+my %g_SCRIPTENV = ();
+$g_SCRIPTENV{'CMDNAME'} = $SCRIPTNAME;                  # command name
+$g_SCRIPTENV{'BASEDIR'} = File::Basename::dirname($PROGRAM_NAME); # directory name of command
+$g_SCRIPTENV{'CFGFILE'} = "$PROGRAM_NAME.cfg";          # expected configuration name
+$g_SCRIPTENV{'LOGCONF'} = "$PROGRAM_NAME.conf";         # expected configuration name
+$g_SCRIPTENV{'LOGFILE'} = "$PROGRAM_NAME.log";          # located log file
+$g_SCRIPTENV{'MAILLOG'} = "";
+$g_SCRIPTENV{'PID'}     = $PROCESS_ID;                  # process ID
+$g_SCRIPTENV{'USERID'}  = $REAL_USER_ID;                # current user ID
+$g_SCRIPTENV{'USER'}    = (getpwuid $REAL_USER_ID)[0];  # current user name
+$g_SCRIPTENV{'WORKDIR'} = $ENV{'PWD'};                  # start working directory
+$g_SCRIPTENV{'SCRDIR'}  = Cwd::abs_path($PROGRAM_NAME); # directory where script is located
+$g_SCRIPTENV{'STIME'}   = getLocalIsoDateTime();        # start date/time in ISO8601
+$g_SCRIPTENV{'SMICROSEC'} = POSIX::clock();             # start of micro-second counter
 
 
+
+#
+#
+#
+#--- global variables --------------------------------------------------
+my %g_options           = ('verbose' => 1);
+my %g_extra             = ();
+#
+#
+#
+Log::Log4perl->easy_init($ERROR);
+$exit_status = main();
+exit $exit_status;
+#
+#
+#
+#
+################################################################################
+#
+# Function block
+#
+################################################################################
+#
+#
+#
+#
+sub main {
+    ############################################################################
+    # Main script entry
+    # Param1:   -
+    # Return:   -
+    ############################################################################
+    my $sts = OK;
+
+    # get log-file configuration
+    getLogFile();
+
+    # get commandline options
+    %g_options = (
+        'opt_a' => 0,       #
+        'opt_b' => '',      #
+        'verbose' => 1,     # verbose level number
+    );
+    Getopt::Long::Configure("bundling_override");
+    my $result = Getopt::Long::GetOptions(
+        'a|opta'      => \$g_options{'opt_a'},
+        'b|optb=s'    => \$g_options{'opt_b'},
+        'h|help'      => sub {helpSynopsis();},
+        'man'         => sub {helpMan('man');},
+        'v|verbose=i' => \$g_options{'verbose'},
+        'version'     => sub {version();},
+    );
+
+    #check option scan result
+    if (not $result) {
+        helpError('Wrong script argument found!', ERR_WRONG_ARGUMENT_FOUND);
+    }
+
+    # get files and/or directories with SDFiles
+    my @sdfiles = ();
+
+    if (@ARGV) {
+        foreach my $item (glob("@ARGV")) {
+
+            if (-d $item) {
+                ## item is a directory
+                notify(VDEBUG, "SDF - directory: $item");
+                push(@sdfiles, glob("$item/*.sdf"));
+            } else {
+                ## item is a file
+                notify(VDEBUG, "SDF - file: $item");
+                push(@sdfiles, glob("$item"));
+            }
+        }
+        my %f;
+        @sdfiles = grep {!$f{$_}++} sort(@sdfiles);    # remove double files and keep the order
+    } else {
+        helpError("No setup-data-files found in command line", ERR_MISSING_SETUP_DATA_FILES);
+    }
+
+    if (!@sdfiles) {
+        helpError("No setup-data-files found, check the command line values!", ERR_NO_SETUP_DATA_FILES);
+    }
+    notify(VINFO, "found files:\n - " . join("\n - ", @sdfiles));
+
+    # get script environment values
+    $sts = showCommandLineParameters();
+
+    # finished
+    if ($sts) {
+        warning("Script aborted!");
+    } else {
+        notify(VNORMAL, "...done");
+    }
+    exit($sts);
+} ## end sub main
+
+
+
+
+sub showCommandLineParameters
+{
+    ############################################################################
+    # Outputs a text information if the current verbose level is less or equal
+    # than the assigned test-output-level.
+    # Param1:   assigned output level
+    # Param2:   text information as scalar or array-reference
+    # Param3:   (option) if this parameter is designed no NEW-LINE character
+    #           will be send after the text output.
+    # Return:   -
+    ############################################################################
+    my $sts = OK;
+
+    message("Command line parameter results:");
+    message("opt_a=$g_options{'opt_a'}");
+    message("opt_b=$g_options{'opt_b'}");
+    foreach my $script_env (qw(CMDNAME BASEDIR CFGFILE LOGFILE
+                               MAILLOG PID SCRDIR USERID USER WORKDIR STIME SMICROSEC)) {
+        if(defined($g_SCRIPTENV{$script_env})) {
+            message("$script_env=$g_SCRIPTENV{$script_env}");
+        }
+    }
+    message("Script execution time: " . ( POSIX::clock() - $g_SCRIPTENV{'SMICROSEC'}) . "usec");
+
+    return $sts;
+}
+
+
+
+
+sub getLocalIsoDateTime {
+    ############################################################################
+    # Returns a ISO8601 date/time string of the local date/time.
+    # Param1:   -
+    # Return:   -
+    ############################################################################
+    return POSIX::strftime('%FT%T', gmtime(time()));
+}
+
+
+
+
+sub getLogFile {
+    ############################################################################
+    # Opens the log file configuration file. If the file is not found a default 
+    # file will be created.
+    # Param1:   -
+    # Return:   -
+    ############################################################################
+    my $sts = OK;
+
+    # build local log-file name
+    my $localLogFile = "~/".basename($g_SCRIPTENV{'LOGCONF'});
+
+    # get current log-file name
+    my @logFiles = (
+        $localLogFile,
+        $g_SCRIPTENV{'LOGCONF'},
+    );
+
+    $g_SCRIPTENV{'LOGCONF'} = $localLogFile;
+
+    # check if file exists
+    foreach my $logFile ( @logFiles ) {
+
+        # get next location of log file
+        if( -f $logFile) {
+            $g_SCRIPTENV{'LOGCONF'} = $logFile;
+            last;
+        }
+
+    }
+
+    # is log file in script environment existing?
+    if( ! -f $g_SCRIPTENV{'LOGCONF'}  ) {
+        open(my $fh, '>:encoding(UTF-8)', glob($g_SCRIPTENV{'LOGCONF'})) or croak("ERROR: file creation failed for '$g_SCRIPTENV{'LOGCONF'}', $!\n");
+        print $fh <<"EOT";
+# Log::Log4perl
+# 
+#
+#####$g_SCRIPTENV{'LOGCONF'}###############################
+log4perl.logger                         = WARN,  FileAppndr1
+#log4perl.logger.house                   = DEBUG, FileAppndr1
+#log4perl.logger.house.bedroom.desk      = INFO,  FileAppndr2
+
+log4perl.appender.FileAppndr1           = Log::Log4perl::Appender::File
+log4perl.appender.FileAppndr1.filename  = $g_SCRIPTENV{'LOGFILE'} 
+log4perl.appender.FileAppndr1.layout    = Log::Log4perl::Layout::SimpleLayout
+    ######################################################
+EOT
+        close($fh);
+
+        message("log file created: $g_SCRIPTENV{'LOGCONF'}");
+    }
+
+    # now load log config file
+    if( -f $g_SCRIPTENV{'LOGCONF'} ) {
+        log::Log4perl::init_and_watch($g_SCRIPTENV{'LOGCONF'}, 10);
+        # or use:  log::Log4perl::init($g_SCRIPTENV{'LOGCONF'});
+    }
+
+    return $sts;
+}
+
+
+
+
+sub warning {
+    ############################################################################
+    # Writes a text to the standard error device and adds a new line at the end.
+    # Param1:   text for display
+    # Return:   -
+    ############################################################################
+    my ($text) = @_;
+    print STDERR "Warning: $text\n";
+    return;
+}
+
+
+
+
+sub error {
+    ############################################################################
+    # Writes a text to the standard error device and adds a new line at the end.
+    # Param1:   text for display
+    # Return:   -
+    ############################################################################
+    my ($text) = @_;
+    print STDERR "ERROR : $text\n";
+    return;
+}
+
+
+
+
+sub notify {
+    ############################################################################
+    # Outputs command line inputs and script enviroment stuff for
+    # common information.
+    # Param1:   -
+    # Return:   OK
+    ############################################################################
+    my ($level, $text, $lineend) = @_;
+    $lineend //= 0;
+    return if ($level > $g_options{'verbose'});
+    my $outText = (ref($text) eq 'ARRAY') ? join("\n", @$text) : $text;
+    $outText =~ s/ [\/\\]{2,} /\//smxg;
+
+    if ($^O =~ /MSWin32/) {
+        $outText =~ s/ \/ /\\/smxg;
+    }
+
+    # output the information
+    print($outText. ($lineend ? '' : "\n"));
+    return;
+} ## end sub notify
+
+
+
+
+sub message {
+    ############################################################################
+    # Writes a text to the standard output device and adds a new line at the end.
+    # Param1:   text for display
+    # Return:   -
+    ############################################################################
+    my ($text) = @_;
+    print "$text\n";
+    ERROR $text;
+    return;
+}
+
+
+
+
+sub version {
+    ############################################################################
+    # Writes a script version to the console and stops the script execution.
+    # Param1:   -
+    # Return:   -
+    ############################################################################
+    print("v$VERSION (release date $RELEASEDATE)\n");
+    exit 0;
+}
+
+
+
+
+sub helpSynopsis {
+    ############################################################################
+    # Displays the help section Synopsis to the screen and stops the script
+    # execution with an error code 0.
+    # Param1:   -
+    # Return:   -
+    ############################################################################
+    pod2usage(1);
+    return;
+}
+
+
+
+
+sub helpMan {
+    ############################################################################
+    # Displays all POD sections to the screen and stops the script execution
+    # with an error code 0.
+    # Param1:   -
+    # Return:   -
+    ############################################################################
+    pod2usage('-verbose' => 2, '-exitval' => 0);
+    exit 0;    # dummy return for Perl::Critic
+}
+
+
+
+
+sub helpError {
+    ############################################################################
+    # Displays a error meassage in front of a Synopsis section to the STDERR
+    # device and stops the script  with the error code 0.
+    # Param1:   Error text
+    # Param2:   Optional: Error code
+    #           default=1
+    # Return:   -
+    ############################################################################
+    my $errortext = 'ERROR: ' . shift // 'Error detected - no details available!';
+    my $errorcode = shift             // 1;
+    pod2usage(
+        '-exitval' => $errorcode,
+        '-verbose' => 1,
+        '-message' => $errortext,
+        '-output'  => \*STDERR,
+    );
+    return;    # dummy return for Perl::Critic
+}
+#
+#
+#
 __END__
+
+=pod
+
+
+
+=head1 NAME
+
+system-setup.pl - This script helps to setup the system by installing
+packages, executes scripts and similar tasks.
+
+=head1 SYNOPSIS
+
+ system-setup.pl [-f|--fake] [-v|--verbose LEVEL] <sd-file>
+ system-setup.pl -h|--help
+ system-setup.pl --man
+ system-setup.pl --version
+
+
+
+=head2 Options
+
+=over 4
+
+=item B<-f | --fake>
+
+Backups the system to all found devices that are listed in the
+configuration file.
+
+=item B<-v  --verbose LEVEL>
+
+Defines the level of additional script outputs.
+
+Default is 0 (= no additional outputs)
+
+=item B<--version>
+
+Returns a text to the console withthe current script version number
+and the release date.
+
+=item B<--man>
+
+Displays the full help text.
+
+=back
+
+=head1 DESCRIPTION
+
+A setup data file is used to control an execution flow to modify the
+system.
+
+
+=head2 Requirements
+
+Perl
+
+
+
+=head1 SETUP-DATA FILE
+
+
+
+=head2 Common Config File Infos
+
+=over 4
+
+=item * B<Empty line>
+
+A line without characters or with whitespace characters
+will be ignored.
+
+=item * B<Comment>
+
+The character '#' and following characters until end of line will
+be ignored. After the removement it will be checked if the line
+fulfills the condition of Empty Line Than the whole line will be ignored.
+
+=item * Data
+
+There are different types of data formats supported:
+
+=over 4
+
+=item - B<Key = String>
+
+One key name per line is expected. Between the first column and the key name
+are white-spaces allowed. After the key name is minimum one white-space
+character expected.
+
+Some key name will have parameters, these parameters are expected after the
+white-sapce delimiter after the key name.
+
+E.g. Execute echo "Hello World!"
+
+=back
+
+=back
+
+=head2 Supported Keys Names
+
+=over 4
+
+=item * Key: Execute <command>
+
+=item * Key: Include <file>
+
+=item * Key: BeginFile
+
+=over 4
+
+=item * FileName <sd-filename>
+
+=item * Content <file-content>
+
+=item * Chmod <group:user>
+
+=item * Chown <permission>
+
+=item * CreatFile
+
+=back
+
+=item * Key: LinuxPackage <package|list>
+
+=item * Key: !if
+
+!if starts an conditional line. The result of the following condition
+controls the execution of the following block until the key !end is found.
+If the condition is true the next key statements will be executed. The key
+!else can be used to execute the statements after !else if the !if
+condition was false.
+
+!if !else !end statements can be used in combinations.
+
+
+
+=over 4
+
+=item * isfile()
+
+=item * ispath()
+
+=item * isdef()
+
+=item * isundef()
+
+=item * grep()
+
+=back
+
+=item * Key: !include
+
+=item * Key: !define
+
+=item * Key: !undef
+
+=back
+
+=head2 Script Variables
+
+=head3 Default Variables
+
+=over 4
+
+=item * %DISTNAME
+
+=item * %DISTVERSION
+
+=item * %DISTSUPPORT
+
+=item * %PACKAGETYPE
+
+    'deb', 'rpm', 'yum', 'arch'
+
+=back
+
+
+
+=head1 EXAMPLES
+
+=head2 Execute document exporation
+
+  system-setup.pl settings/demo.sdf
+
+
+
+=head1 AUTHOR
+
+Heiko Klausing
+
+system-setup.pl was designed by Heiko Klausing.
+
+=head1 BUGS
+
+No bugs have been reported.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (c) 2015 Heiko Klausing. All rights reserved. This program is
+free software; you can redistribute it and/or modify it under the same terms
+as Perl itself.
+
+Author can be reached at h dot klausing at gmx dot de
+
+=cut
