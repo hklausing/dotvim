@@ -138,7 +138,7 @@ if !empty(glob("~/.vim/bundle/Vundle.vim/autoload/vundle.vim"))
     " *****************************
 
     " Followed by: http://vimawesome.com/
-    " The NERD tree allows you to explore your filesystem and to open files and directories
+    " The NERD tree allows you to explore your file system and to open files and directories
     " Usage: <Ctrl>n
     Plugin 'scrooloose/nerdtree'
 
@@ -200,8 +200,8 @@ if !empty(glob("~/.vim/bundle/Vundle.vim/autoload/vundle.vim"))
     " *****************************
     " Ruby related plugins
     " *****************************
-    " 
-    " Usage: 
+    "
+    " Usage:
     Plugin 'vim-ruby/vim-ruby'
 
 
