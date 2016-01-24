@@ -1,12 +1,15 @@
 Installation
 ============
 
+*** Detailed and long version ***
+
+
 Dot-Vim installation
 --------------------
 
 Clone dot-vim project:
 
-    $ git clone https://github.com/Daderus/dotvim.git ~/.vim
+    $ git clone https://github.com/hklausing/dotvim.git
 
 Create symlinks:
 
@@ -32,4 +35,18 @@ Launch vim:
 and run following command:
 
     :PluginInstall
+
+
+
+*** Quick installation ***
+
+Script install.sh
+-----------------
+
+The script install.sh does all the steps defines above.
+Start the script:
+
+    $ cd ~/.vim
+    $ ./install.sh
+
 

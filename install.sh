@@ -24,6 +24,9 @@ cd ~/.vim
 git submodule update
 git submodule init
 
+# start the plugin installation in vim
+vim +PluginInstall +qall
+
 # restore directory
 cd ${STARTDIR}
 
