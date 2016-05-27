@@ -8,28 +8,11 @@
 # Build files
 /.netrwhist
 *.log
+*.old
 
 # Other files
 *.vba
 
 # Plugin directories
-bundle/FuzzyFinder/
-bundle/L9/
-bundle/VimOrganizer/
-bundle/VimgrepBuffer/
-bundle/ack.vim/
-bundle/command-t/
-bundle/ctrlp.vim/
-bundle/nerdcommenter/
-bundle/nerdtree/
-bundle/perl-support.vim/
-bundle/perldoc-vim/
-bundle/sparkup/
-bundle/syntastic/
-bundle/tabular/
-bundle/vim-airline/
-bundle/vim-colors-solarized/
-bundle/vim-easymotion/                                                                                              
-bundle/vim-fugitive/                                                                                                
-bundle/vim-ruby/                                                                                                    
-bundle/vim-surround/
+bundle/*
+!bundle/.vundle/

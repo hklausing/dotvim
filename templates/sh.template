@@ -1,14 +1,16 @@
-#!/bin/bash
+#!/bin/bash - 
 #
 # File          template.sh
 # Author        H. Klausing
-# Creation      2015-10-11
+# Creation      2016-05-27
 #
 # Description   This is a template script with some useful content that can be
 #               easily take for final script function.
 #               Start requirements: option -a, -b or extra data is required.
 #
 ################################################################################
+
+set -o nounset                              # Treat unset variables as an error
 
 
 readonly FULL_NAME=$0
@@ -18,6 +20,16 @@ readonly VERSION=0.0.1
 
 # list of required command for early check
 readonly NEEDED_COMMANDS="rm sed"
+
+# global variables
+# script option values
+declare -A g_opt
+g_opt['verbose']=0                  # verbose level for log()
+g_opt['debug']=0                    # verbose level for log()
+g_opt['b']='abc'                    # optional parameter with value
+g_opt['a']=0                        # optional parameter without value
+# required array parameter (e.g. filenames, pathnames, ...)
+declare -a g_param                  # clear content of required parameter(s)
 
 
 ################################################################################
@@ -37,15 +49,18 @@ usage: $SCRIPT_NAME [OPTION] ...
 
 OPTION optional parameter:
   -a        The optional parameter 'a'
+  -d        Show debug information, options and parameters
   -b value  The optional parameter 'b' with required value
   -h        Print this help
-  -v        Increment verbose level
+  -v        Increment verbose level; to increase the level multiple options 
+            are possible. Default level is 0.
   -V        Print script version
 
 EXAMPLE:
   $SCRIPT_NAME -b optb
 END
 }
+
 
 #-------------------------------------------------------------------------------
 # Shows an error text on STDERR
@@ -56,6 +71,7 @@ printError()
 {
     echo "ERROR: $1" >&2
 }
+
 
 #-------------------------------------------------------------------------------
 # Check if all needed commands existing on the system. The variable 
@@ -86,6 +102,7 @@ checkNeededCommands()
 
 }
 
+
 #-------------------------------------------------------------------------------
 # Cleanup some stuff before the script will be stopped.
 # Param1:   -
@@ -95,6 +112,46 @@ finishScript()
 {
     # delete lock file
     rm -f $LOCK_FILE
+}
+
+
+#-------------------------------------------------------------------------------
+# Print a log information to the terminal. A log-level controls, together with
+# the verbose option (-v) if the information will be printed or not.
+# Param1:   log-level
+# Param2:   text that will be printed
+# Return:   -
+#-------------------------------------------------------------------------------
+log()
+{
+    if (( ${g_opt['verbose']} >= $1 )); then
+        echo "$2"
+    fi
+}
+
+
+#-------------------------------------------------------------------------------
+# Print all existing option values to the terminal. The values will be printed
+# if the debug option (-d) is defined.
+# Param1:   -
+# Return:   -
+#-------------------------------------------------------------------------------
+logOptionParameter()
+{
+    if (( ${g_opt['debug']} == 1 )); then
+
+        # list script options
+        echo "Option values:"
+        for opt in "${!g_opt[@]}"; do
+            echo "- ${opt} => ${g_opt[$opt]}"
+        done | sort
+
+        # list script parameters
+        echo "Parameter:"
+        for para in "${g_param[@]}"; do
+            echo "- $para"
+        done
+    fi
 }
 
 
@@ -108,26 +165,26 @@ finishScript()
 checkNeededCommands
 
 options_found=0         # will be incremented be each found option
-opt_a=0                 # default 0
-opt_b="defaultValue"    # default test info
-opt_verbose=0           # default value 0
 
 # parameter while-loop
-while getopts :ab:hvV optname; do
+while getopts :ab:dhvV optname; do
     (( options_found++ ))
     case ${optname} in
         a)  
-            opt_a=1;
+            g_opt['a']=1;
             ;;
         b)  
-            opt_b=$OPTARG;
+            g_opt['b']=$OPTARG;
+            ;;
+        d)  
+            g_opt['debug']=1;
             ;;
         h)  
             printUsage;
             exit 0; 
             ;;
         v)  
-            (( opt_verbose++ ));
+            (( g_opt['verbose']++ ));
             ;;
         V)  
             echo "Version ${VERSION}";
@@ -146,11 +203,11 @@ done
 
 # get a list of extra parameters
 shift $(($OPTIND - 1))
-OPTEXTRA=$@
+g_param=( "${@}" )              # copy array to array
 
-# check if one or more options were found
-if [[ $options_found -eq 0 && -z "$OPTEXTRA" ]]; then
-    printError "Called with no parameter!"
+# check if one or more required parameters were found
+if (( ${#g_param[0]} == 0 )); then
+    printError "Called without required parameter!"
     exit 1
 fi
 
@@ -172,11 +229,8 @@ touch $LOCK_FILE
 ### Start with script body
 ################################################################################
 
-
-
 # show options
-echo "option: opt_a=$opt_a, opt_b=$opt_b, opt_verbose=$opt_verbose"
-[ -n "$OPTEXTRA" ] && echo "extras: ${OPTEXTRA[*]}"
+logOptionParameter
 
 
 exit 0
