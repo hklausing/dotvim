@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer:
 "       Heiko Klausing
 "       http://www.hmkf.ed - [h.klausing@gmx.de]
@@ -6,7 +6,7 @@
 "           Based on Amir Salihefendic, http://amix.dk/vim/vimrc.html
 "
 " Version:
-"       1.1.0 - 2015-10-10
+"       1.1.2 - 2016-05-28
 "
 " Blog_post:
 "       -
@@ -90,19 +90,17 @@
     " This should always be the first
       Plugin 'gmarik/Vundle.vim'
 
-    " This examples are from https://github.com/gmarik/Vundle.vim README
-      Plugin 'tpope/vim-fugitive'
-
     " Plugin from http://vim-scripts.org/vim/scripts.html
+    " Required for vim-fugitive
       Plugin 'L9'
+
+    " This examples are from https://github.com/gmarik/Vundle.vim README
+    " Help: fugitive
+       Plugin 'tpope/vim-fugitive'
 
     " Sparkup lets you write HTML code faster
     " Usage: <Ctrl>e    in a .html file
-      Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-
-    "" Avoid a name conflict with L9
-      "Plugin 'user/L9', {'name': 'newL9'}
-
+     "Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 
     " *****************************
@@ -111,6 +109,7 @@
     "Every Plugin should be before this line
     "
     " status/tabline for vim without Python.
+    " Help: airline
       Plugin 'bling/vim-airline'
 
 
@@ -119,39 +118,38 @@
     " *** modification
     " *****************************
 
-    " tcomment provides easy to use, file-type sensible comments for 
+    " tcomment provides easy to use, file-type sensible comments for
     " Vim. It can handle embedded syntax.
     " Usage: <v>gc or gcc
+    " Help: tcomment
       Plugin 'tomtom/tcomment_vim'
 
-    " Syntax checking helper
-      Plugin 'scrooloose/syntastic'
-
     " 'surroundings': parentheses, brackets, quotes, XML tags, and more
+    " Usage: cs"', ds', ...
+    " Help: surround
       Plugin 'tpope/vim-surround'
 
-    " Provides a much simpler way to use some motions in vim.
-    " Usage: <leader><leader>w
-      Plugin 'easymotion/vim-easymotion'
-    
+    " Graph your Vim undo tree in style.
+    " Usage: F6
+    " Help: 
+      Plugin 'sjl/gundo.vim'
+
+
 
     " *****************************
     " *** file/directory navigation
     " *****************************
 
+    " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
+    " Usage: <Ctrl>p
+    " Help: ctrlp
+      Plugin 'ctrlpvim/ctrlp.vim'
+
     " Followed by: http://vimawesome.com/
     " The NERD tree allows you to explore your file system and to open files and directories
     " Usage: <Ctrl>n
+    " Help:
       Plugin 'scrooloose/nerdtree'
-
-    " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
-    " Usage: <Ctrl>p
-      "Plugin 'kien/ctrlp.vim' " no maintenance any more
-      Plugin 'ctrlpvim/ctrlp.vim'
-
-    " Git plugin not hosted on GitHub
-    " Usage: <leader>t
-      Plugin 'git://git.wincent.com/command-t.git'
 
 
     " *****************************
@@ -160,11 +158,8 @@
 
     " Run your favorite search tool from Vim, with an enhanced results list.
     " Usage: :Ack pattern
+    " Help: ack
       Plugin 'mileszs/ack.vim'
-
-    " VimOrganizer is partly a clone of Emacs' Org-mode
-    " Usage:
-      Plugin 'hsitz/VimOrganizer'
 
 
     " *****************************
@@ -176,62 +171,57 @@
 
     " line up text
     " Usage:  :'<,'>Tabularize /=
-      Plugin 'godlygeek/tabular'
+    " Help: tabular
+"     Plugin 'godlygeek/tabular'
+
+    " A simple, easy-to-use Vim alignment plugin.
+    " Usage: vipga=
+    " Help EasyAlign
+      Plugin 'junegunn/vim-easy-align'
 
     " Convenient ways to quickly reach the buffer/file/command/bookmark/tag
     " Usage: fuff abc
     " <C-P> -> select a file -> <C-T> open file in new tab
     "          -             -> <CR> open file in current tab
     "          -             -> <C-V> open file in vertical-split window
-    "
+    " Help: fuzzyfinder
       Plugin 'FuzzyFinder'
-
-    " provides easy application of the 'vimgrep' command on buffers
-    " Usage: :G /\s*print "\d/  or :GG /\s*print "\d/  or  :G "pattern"
-      Plugin 'vim-scripts/VimgrepBuffer'
 
     " Auto completion
     " Usage: type text and press <TAB>
+    " Help: supertab
       Plugin 'ervandew/supertab'
 
+    " Integrates the grep, fgrep, egrep, and agrep tools
+    " Usage: Bgrep [-i] pattern
+    " Help: see bundle/grep/plugin/grep.vim
+      Plugin 'yegappan/grep'
+
 
     " *****************************
-    " Perl related plugins
+    " Development related plugins
     " *****************************
+
+    " Syntax checking hacks for vim
+    " Usage:
+    " Help:
+     "Plugin 'scrooloose/syntastic'
+
     " Interface to perldoc. you can get perldoc with integrated operation for vim.
     " Usage: select word and press K
-      Plugin 'hotchpotch/perldoc-vim'
+    " Help:
+      "Plugin 'hotchpotch/perldoc-vim'
 
     " Ruby support for Vim/gVim.
     " Usage: show help with h vim-ruby
-"     Plugin 'perl-support.vim'
+    " Help:
+     "Plugin 'perl-support.vim'
 
-
-    " *****************************
-    " Ruby related plugins
-    " *****************************
     "
     " Usage:
+    " Help:
      "Plugin 'vim-ruby/vim-ruby'
 
-
-    " *****************************
-    " IDE environment
-    " *****************************
-
-    " Vim plug-ins which offer support for various programming languages.
-    " Usage: see help
-      Plugin 'WolfgangMehner/vim-plugins'
-
-
-    " *****************************
-    " Ruby related plugins
-    " *****************************
-
-
-    " *****************************
-    " Ruby related plugins
-    " *****************************
 
     " End of plugin definitions for vundle
       call vundle#end()           " required
@@ -542,7 +532,8 @@
 " makes changes to files that have read-only permissions for current user/group
   cmap w!! %!sudo tee > /dev/null %
 
-
+" Shortcut for FuzzyFinder
+  map <leader>f :FufFile<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -635,9 +626,9 @@
 " F3    V-split         H-split         -       -
 " F4    toggle_matches  -               -       -
 " F5    toggle_line_no  -               -       -
-" F6    -               -               -       -
+" F6    gundo           -               -       -
 " F7    -               -               -       -
-" F8    fuzzyfinderfile fuzzyfinderbuf  -       -
+" F8    -               -               -       -
 " F9    -               toggle_bg_color -       -
 " F10   -               -               -       -
 " F11   toggle_past     -               -       -
@@ -726,12 +717,7 @@
     let g:ackprg="ack -H --nocolor --nogroup --column"
   endif
 
-" FuzzyFinder
-   noremap <F8>       :FufFile<cr>
-  inoremap <F8>       <c-c>:FufFile<cr>
-  vnoremap <F8>       <c-c>:FufFile<cr>
-   noremap <s-F8>     :FufBuffer<cr>
-
+  "
   if !empty(glob("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
     " vim-colors-solarized
       call togglebg#map("<F9>")
@@ -741,6 +727,14 @@
 " Looks up Perl command under cursor when K is pressed
   set keywordprg=perldoc\ -f
 
+" Setting for EasyAlign
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+  xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap ga <Plug>(EasyAlign)
+
+" gundo
+  nnoremap <F6> :GundoToggle<CR>
 
 
 

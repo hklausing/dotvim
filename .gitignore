@@ -15,4 +15,3 @@
 
 # Plugin directories
 bundle/*
-!bundle/.vundle/

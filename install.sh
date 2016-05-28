@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# File          install.sh
+# File          ~/.vim/install.sh
 # Author        H. Klausing
 # Creation      2013-12-12
 #
@@ -10,19 +10,13 @@
 #
 ################################################################################
 
-# remove existing ~/.vimrc file
-rm -f ~/.vimrc
-
-# create link
-ln -s ~/.vim/vimrc ~/.vimrc
-
 # change to vin directory
 STARTDIR=${PWD}
 cd ~/.vim
 
 # get Vundle repository data
-git submodule update
-git submodule init
+mkdir -p bundle
+[ ! -f ./bundle/Vundle.vim/autoload/vundle.vim ] && git clone https://github.com/VundleVim/Vundle.vim.git ./bundle/Vundle.vim
 
 # start the plugin installation in vim
 vim +PluginInstall +qall
