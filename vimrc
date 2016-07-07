@@ -351,7 +351,7 @@
     end
 
     " define colorscheme
-"   let g:solarized_termcolors=256
+     "let g:solarized_termcolors=256
       colorscheme solarized
 
   else
@@ -361,10 +361,10 @@
 
   endif
 
-" default values
+" session default font values
   let s:defaultfontsize = 11
   let s:minfontsize = 5
-  let s:maxfontsize = 32
+  let s:maxfontsize = 48
 
 " related functions
 
@@ -404,21 +404,22 @@
       set guioptions-=e           " disable GUI-tabs
 
       if has("gui_gtk2")
-        "echo "GUI-Type: gui_gtk2"
-          set guifont=Hack\ 11
-          call SetDefaultFontSize()
+         "echo "GUI-Type: gui_gtk2"
+          let font = {"name" : "Hack", "size" : s:defaultfontsize }
+         "let font = {"name" : "DejaVu Sans Mono", "size" : s:defaultfontsize }
+          let &guifont=join(values(font))
       elseif has("gui_photon")
-          "echo "GUI-Type: gui_photon"
+         "echo "GUI-Type: gui_photon"
           set guifont=Courier\ New:s11
       elseif has("gui_kde")
-          "echo "GUI-Type: gui_kde"
+         "echo "GUI-Type: gui_kde"
           set guifont=Courier\ New/11/-1/5/50/0/0/0/1/0
       elseif has("x11")
-          "echo "GUI-Type: x11"
+         "echo "GUI-Type: x11"
           "set guifont=-*-courier-medium-r-normal-*-*-180-*-*-m-*-*
           "set guifont=Courier\ New
       else
-          "echo "GUI-Type: ???"
+         "echo "GUI-Type: ???"
           "set guifont=Courier_New:h11:cDEFAULT
       endif
 

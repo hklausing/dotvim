@@ -275,18 +275,37 @@ sub getLogFile {
     if( ! -f $g_SCRIPTENV{'LOGCONF'}  ) {
         open(my $fh, '>:encoding(UTF-8)', glob($g_SCRIPTENV{'LOGCONF'})) or croak("ERROR: file creation failed for '$g_SCRIPTENV{'LOGCONF'}', $!\n");
         print $fh <<"EOT";
-# Log::Log4perl
 # 
+# File:     $g_SCRIPTENV{'LOGCONF'}
 #
-#####$g_SCRIPTENV{'LOGCONF'}###############################
-log4perl.logger                         = WARN,  FileAppndr1
-#log4perl.logger.house                   = DEBUG, FileAppndr1
-#log4perl.logger.house.bedroom.desk      = INFO,  FileAppndr2
 
-log4perl.appender.FileAppndr1           = Log::Log4perl::Appender::File
-log4perl.appender.FileAppndr1.filename  = $g_SCRIPTENV{'LOGFILE'} 
-log4perl.appender.FileAppndr1.layout    = Log::Log4perl::Layout::SimpleLayout
-    ######################################################
+
+###
+# Supported levels: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL
+
+
+###
+# define relation of categorties, levels and appenders
+log4perl.logger                                 = ERROR, Screen
+log4perl.logger.Groceries                       = DEBUG, Log
+
+
+###
+# define appenders and layouts
+
+log4perl.appender.Screen                        = Log::Log4perl::Appender::Screen
+log4perl.appender.Screen.stderr                 = 0
+log4perl.appender.Screen.utf8                   = 1
+log4perl.appender.Screen.Threshold              = ALL
+log4perl.appender.Screen.layout                 = Log::Log4perl::Layout::SimpleLayout
+
+log4perl.appender.Log                           = Log::Log4perl::Appender::File
+log4perl.appender.Log.filename                  = $g_SCRIPTENV{'LOGFILE'}
+log4perl.appender.Log.mode                      = append
+log4perl.appender.Log.Threshold                 = OFF
+log4perl.appender.Log.layout                    = Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Log.layout.ConversionPattern  = %d %p> %F{1}:%L %M - %m%n
+
 EOT
         close($fh);
 
