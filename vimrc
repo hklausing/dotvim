@@ -102,6 +102,9 @@
     " Usage: <Ctrl>e    in a .html file
      "Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
+    " Solarized Colorscheme for Vim Description
+      Plugin 'altercation/vim-colors-solarized'
+
 
     " *****************************
     " *** Status line format
@@ -110,7 +113,9 @@
     "
     " status/tabline for vim without Python.
     " Help: airline
-      Plugin 'bling/vim-airline'
+"     Plugin 'bling/vim-airline'
+      Plugin 'vim-airline/vim-airline'
+"     Plugin 'vim-airline/vim-airline-themes'
 
 
     " *****************************
@@ -131,7 +136,7 @@
 
     " Graph your Vim undo tree in style.
     " Usage: F6
-    " Help: 
+    " Help:
       Plugin 'sjl/gundo.vim'
 
 
@@ -139,6 +144,9 @@
     " *****************************
     " *** file/directory navigation
     " *****************************
+    "
+Plugin 'jeetsukumaran/vim-buffergator'
+
 
     " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
     " Usage: <Ctrl>p
@@ -166,8 +174,8 @@
     " *** Helper functions
     " *****************************
 
-    " Solarized Colorscheme for Vim Description
-      Plugin 'altercation/vim-colors-solarized'
+"   " Solarized Colorscheme for Vim Description
+"     Plugin 'altercation/vim-colors-solarized'
 
     " line up text
     " Usage:  :'<,'>Tabularize /=
@@ -179,23 +187,30 @@
     " Help EasyAlign
       Plugin 'junegunn/vim-easy-align'
 
-    " Convenient ways to quickly reach the buffer/file/command/bookmark/tag
-    " Usage: fuff abc
-    " <C-P> -> select a file -> <C-T> open file in new tab
-    "          -             -> <CR> open file in current tab
-    "          -             -> <C-V> open file in vertical-split window
-    " Help: fuzzyfinder
-      Plugin 'FuzzyFinder'
+"   " Convenient ways to quickly reach the buffer/file/command/bookmark/tag
+"   " Usage: fuff abc
+"   " <C-P> -> select a file -> <C-T> open file in new tab
+"   "          -             -> <CR> open file in current tab
+"   "          -             -> <C-V> open file in vertical-split window
+"   " Help: fuzzyfinder
+"     Plugin 'FuzzyFinder'
+"     Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
     " Auto completion
     " Usage: type text and press <TAB>
     " Help: supertab
-      Plugin 'ervandew/supertab'
+"     Plugin 'ervandew/supertab'
+     "Plugin 'Valloric/YouCompleteMe'
 
     " Integrates the grep, fgrep, egrep, and agrep tools
     " Usage: Bgrep [-i] pattern
     " Help: see bundle/grep/plugin/grep.vim
       Plugin 'yegappan/grep'
+
+    " causes all trailing whitespace characters (spaces and tabs) to be highlighted
+    " Usage:
+    " Help:
+      Plugin 'ntpeters/vim-better-whitespace'
 
 
     " *****************************
@@ -244,6 +259,10 @@
 
 " Set 7 lines to the cursor - when moving vertically using j/k
   set so=7
+
+" Search down into subfolders. Provides tab-completion for all
+" file-related tasks.
+  set path+=./**
 
 " Turn on the Wild menu
   set wildmenu
@@ -561,17 +580,22 @@
   else
     " Airline loaded
 
+"   let g:airline#extensions#tabline#enabled = 1
+      let g:airline_theme = "dark"
+
+    " Show buffer number
+      let g:airline_section_y = 'BN:%{bufnr("%")}'
+
     " Settings for bling/vim-airline
-      let g:airline_powerline_fonts = 1
+"     let g:airline_powerline_fonts = 1
 
     " Smarter tab line
       let g:airline#extensions#tabline#enabled = 1
 
-
-      if !exists('g:airline_symbols')
-        let g:airline_symbols = {}
-      endif
-      let g:airline_symbols.space = "\ua0"
+     if !exists('g:airline_symbols')
+       let g:airline_symbols = {}
+     endif
+     let g:airline_symbols.space = "\ua0"
 
   end
 
@@ -626,14 +650,14 @@
 " F2    folding         -               -       -
 " F3    V-split         H-split         -       -
 " F4    toggle_matches  -               -       -
-" F5    toggle_line_no  -               -       -
+" F5    toggle_line_no  toggle_paste    -       SpellCheck
 " F6    gundo           -               -       -
 " F7    -               -               -       -
 " F8    -               -               -       -
 " F9    -               toggle_bg_color -       -
-" F10   -               -               -       -
-" F11   toggle_past     -               -       -
-" F12   show_spaces     trim_spaces     -       -
+" F10   trim_spaces     -               -       -
+" F11   -               -               -       -
+" F12   show_spaces     -               -       -
 
 "
 " folding
@@ -643,37 +667,45 @@
   vnoremap <F2>       zf
 
 " open vertical explorer window
-       map <F3>       :Vexplore<cr>
-       map <s-F3>     :Hexplore<cr>
+       map <F3>       	:Vexplore<cr>
+       map <s-F3>     	:Hexplore<cr>
 
 " toggle highlighted matches
-      nmap <F4>       :set hls! <cr>
+      nmap <F4>       	:set hls! <cr>
 " hit '/' highlights then enter search mode
-  nnoremap /         :set hlsearch<cr>/
+  nnoremap /         	:set hlsearch<cr>/
 
-" hit f11 to paste
-  set pastetoggle=<f11>
+" Toggle line number
+  nnoremap <F5>      	:call NumberToggle()<cr>
+  inoremap <F5> <ESC>	:call NumberToggle()<cr>i
+  vnoremap <F5> <ESC>	:call NumberToggle()<cr>gv
 
-" marks trailing white-spaces
-  nnoremap <F12>      :ShowSpaces 1<CR>
+" hit F11 to paste
+  set pastetoggle=<S-F5>
 
-" removes trailing white-spaces with user interaction
-  nnoremap <S-F12>    m`:TrimSpaces<CR>``
-  vnoremap <S-F12>    :TrimSpaces<CR>
+" Toggle spellcheck
+  nnoremap <A-F5>       :setlocal spell! spelllang=en_us<CR>
+
+" Toggle trailing white-spaces
+  nnoremap <F10>     	:ToggleWhitespace<CR>
+
+" Trim trailing spaces
+  nnoremap <S-F10>   	:StripWhitespace<CR>
+
 
 "
 " Font size change
 " ... increase font size
-  inoremap <C-kPlus>  <ESC>:call EnlargeFont()<CR>i
-  nnoremap <C-kPlus>  :call EnlargeFont()<CR>
+  inoremap <C-kPlus><ESC>:call EnlargeFont()<CR>i
+  nnoremap <C-kPlus>  	:call EnlargeFont()<CR>
 
 " ... decrease font size
-  inoremap <C-kMinus> <ESC>:call ShrinkFont()<CR>i
-  nnoremap <C-kMinus> :call ShrinkFont()<CR>
+  inoremap <C-kMinus><ESC>:call ShrinkFont()<CR>i
+  nnoremap <C-kMinus> 	:call ShrinkFont()<CR>
 
 " ... set font size to default value
-  inoremap <C-k0>     <ESC>:call SetDefaultFontSize()<CR>i
-  nnoremap <C-k0>     :call SetDefaultFontSize()<CR>
+  inoremap <C-k0><ESC>	:call SetDefaultFontSize()<CR>i
+  nnoremap <C-k0>     	:call SetDefaultFontSize()<CR>
 
 
 
@@ -683,6 +715,22 @@
 " define the template names
   autocmd BufNewFile * silent! 0r ~/.vim/templates/%:e.template
 
+" Create the 'tags' file (may need to install ctags first!)
+  command! MakeTags     !ctags -R .
+
+" Tweaks for file browsing
+  let g:netrw_banner = 0        " disable annoying banner
+  let g:netrw_browse_split = 4  " open in prior window
+  let g:netrw_altv = 1          " open splits to the right
+  let g:netrw_liststyle = 3     " tree view
+  let g:netrw_list_hide = netrw_gitignore#Hide()
+  let g:netrw_list_hide .= ',\(^\|\s\s\)\zs\.\S\+'
+" NOW WE CAN:
+" - :edit a folder to open a file browser
+"    - <CR>/v/t to open in an h-split/v-split/tab
+" - check |netrw-browse-maps| for more mappings
+
+
 
 
 
@@ -690,7 +738,7 @@
 " => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pressing ,ss will toggle and untoggle spell checking
-  map <leader>ss      :setlocal spell!<cr>
+  map <leader>ss      	:setlocal spell!<cr>
 
 " Shortcuts using <leader>
   map <leader>sn      ]s
@@ -705,7 +753,7 @@
 " => Plugin Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings for NERTDTree
-  map <C-n>   :NERDTreeToggle<cr>
+  map <C-n>   			:NERDTreeToggle<cr>
 
 " Syntastic
   let g:syntastic_always_populate_loc_list = 1
@@ -722,7 +770,7 @@
   if !empty(glob("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
     " vim-colors-solarized
       call togglebg#map("<F9>")
-      noremap <s-F9>  :set list!<cr>
+      noremap <s-F9> 	:set list!<cr>
   end
 
 " Looks up Perl command under cursor when K is pressed
@@ -792,7 +840,7 @@ endfunction
 function! HasPaste()
     if &paste
         return 'PASTE MODE  '
-    en
+    endif
     return '            '
 endfunction
 
@@ -818,33 +866,6 @@ function! <SID>BufcloseCloseIt()
         execute("bdelete! ".l:currentBufNum)
     endif
 endfunction
-
-
-"""
-" Mark all trailing white-spaces
-function! ShowSpaces(...)
-    let @/='\v(\s+$)|( +\ze\t)'
-    let oldhlsearch=&hlsearch
-    if !a:0
-        let &hlsearch=!&hlsearch
-    else
-        let &hlsearch=a:1
-    end
-    return oldhlsearch
-endfunction
-
-
-
-"""
-" Removes trailing whithe-spaces with user interaction
-function! TrimSpaces() range
-    let oldhlsearch=ShowSpaces(1)
-    execute a:firstline.",".a:lastline."substitute ///gec"
-    l:et &hlsearch=oldhlsearch
-endfunction
-
-command! -bar -nargs=? ShowSpaces call ShowSpaces(<args>)
-command! -bar -nargs=0 -range=% TrimSpaces <line1>,<line2>call TrimSpaces()
 
 
 
@@ -888,7 +909,6 @@ set guitablabel=%{GuiTabLabel()}
 
 """
 " Toggles between settings of number and relativenumber.
-"" Usage: <CTRL> L  in modes: normal, insert and visual
 " Usage: F5      in modes: normal, insert and visual
 "
 function! NumberToggle()
@@ -906,11 +926,4 @@ function! NumberToggle()
         set nonumber
     endif
 endfunc
-
-"nnoremap <C-l> :call NumberToggle()<cr>
-"inoremap <C-l> <ESC>:call NumberToggle()<cr>i
-"vnoremap <C-l> <ESC>:call NumberToggle()<cr>gv
-nnoremap <F5> :call NumberToggle()<cr>
-inoremap <F5> <ESC>:call NumberToggle()<cr>i
-vnoremap <F5> <ESC>:call NumberToggle()<cr>gv
 

@@ -1,7 +1,5 @@
-Installation
-============
-
-*** Detailed and long version ***
+Installation (version 2016-10-16)
+=================================
 
 
 Dot-Vim installation
@@ -9,44 +7,11 @@ Dot-Vim installation
 
 Clone dot-vim project:
 
-    $ git clone https://github.com/hklausing/dotvim.git
+    $ cd ~
+    $ git clone https://github.com/hklausing/dotvim.git .vim
 
-Create symlinks:
+Start the installation script:
 
-    $ ln -s ~/.vim/vimrc ~/.vimrc
-
-Switch to the `~/.vim` directory, and fetch submodules:
-
-    $ cd ~/.vim
-    $ git submodule init
-    $ git submodule update
-
-
-Plugin: Vundle
---------------
-
-The defined vim plugins have to initialized via a function call 
-within vim.
-
-Launch vim:
-
-    $ vim
-
-and run following command:
-
-    :PluginInstall
-
-
-
-*** Quick installation ***
-
-Script install.sh
------------------
-
-The script install.sh does all the steps defines above.
-Start the script:
-
-    $ cd ~/.vim
-    $ ./install.sh
+    $ ~/.vim/install.sh
 
 

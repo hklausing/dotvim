@@ -10,18 +10,28 @@
 #
 ################################################################################
 
-# change to vin directory
+# Save current directory
 STARTDIR=${PWD}
+
+# Change to vim directory.
 cd ~/.vim
 
-# get Vundle repository data
+# Create plugin storage folder.
 mkdir -p bundle
-[ ! -f ./bundle/Vundle.vim/autoload/vundle.vim ] && git clone https://github.com/VundleVim/Vundle.vim.git ./bundle/Vundle.vim
 
-# start the plugin installation in vim
+# Clone the Vundle repository if required.
+if [[ ! -f ./bundle/Vundle.vim/autoload/vundle.vim ]]; then
+    git clone https://github.com/VundleVim/Vundle.vim.git ./bundle/Vundle.vim
+fi
+
+# Start the plugin installation in vim.
 vim +PluginInstall +qall
 
-# restore directory
+if [[ "$?" != 0 ]]; then
+    echo "Execution of plugin installation in vim failed with error code $?!"
+fi
+
+# Restore to call directory.
 cd ${STARTDIR}
 
 exit 0
