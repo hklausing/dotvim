@@ -26,12 +26,13 @@
 "
 " Sections:
 "    -> General
+"    -> Plugin Manager
 "    -> VIM user interface
 "    -> Colors and Fonts
-"    -> Files and backups
+"    -> Files and backups and undo
 "    -> Text, tab and indent related
 "    -> Visual mode related
-"    -> Moving around, tabs and buffers
+"    -> Moving around, tabs, windows and buffers
 "    -> Status line
 "    -> Editing mappings
 "    -> Function key mappings
@@ -41,12 +42,19 @@
 "    -> Misc
 "    -> Helper functions
 "
+" Notes:
+"   zM - close all open markers
+"   zR - open all closed markers
+"   zo - opens a fold at cursor
+"   zc - closes a fold at cursor
+"   :mkview - stores folds
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
+" => General {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
   set history=700
@@ -68,8 +76,8 @@
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin manager
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Plugin Manager {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " check if Vundle is available before it can be used.
   if !empty(glob("~/.vim/bundle/Vundle.vim/autoload/vundle.vim"))
@@ -117,7 +125,6 @@
       Plugin 'vim-airline/vim-airline'
 "     Plugin 'vim-airline/vim-airline-themes'
 
-
     " *****************************
     " *** Test navigation and
     " *** modification
@@ -145,13 +152,14 @@
     " *** file/directory navigation
     " *****************************
     "
-Plugin 'jeetsukumaran/vim-buffergator'
+    "Plugin 'jeetsukumaran/vim-buffergator'
 
 
     " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
     " Usage: <Ctrl>p
     " Help: ctrlp
       Plugin 'ctrlpvim/ctrlp.vim'
+      Plugin 'tacahiroy/ctrlp-funky'
 
     " Followed by: http://vimawesome.com/
     " The NERD tree allows you to explore your file system and to open files and directories
@@ -246,10 +254,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => VIM user interface {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Enable filetype plugins
@@ -267,8 +273,11 @@ Plugin 'jeetsukumaran/vim-buffergator'
 " Turn on the Wild menu
   set wildmenu
 
-" Ignore compiled files
-  set wildignore=*.o,*~,*.pyc
+" Ignore compiled, binary files or unwanted directories
+  set wildignore+=*.a,*.o,*.pyc
+  set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
+  set wildignore+=.git,.svn
+  set wildignore+=*~,*.swp,*.tmp
 
 " Always show current position
   set ruler
@@ -327,11 +336,14 @@ Plugin 'jeetsukumaran/vim-buffergator'
   set number
   set relativenumber
 
+" Auto fold settings
+  set foldmethod=marker
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Colors and Fonts {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
   syntax enable
@@ -447,8 +459,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Files, backups and undo {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Set utf8 as standard encoding and en_US as the standard language
@@ -462,11 +474,14 @@ Plugin 'jeetsukumaran/vim-buffergator'
   set nowritebackup
   set noswapfile
 
+" Remove all folds on loaded file
+  autocmd BufWinEnter * set foldmethod=manual | normal zE
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Text, tab and indent related {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
   set expandtab
@@ -489,8 +504,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Visual mode related
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Visual mode related {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
@@ -500,8 +515,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Moving around, tabs, windows and buffers {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Treat long lines as break lines (useful when moving around in them)
   map j           gj
@@ -556,8 +571,10 @@ Plugin 'jeetsukumaran/vim-buffergator'
   map <leader>f :FufFile<cr>
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Status line
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Status line {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Always show the status line
   set laststatus=2
@@ -602,8 +619,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Editing mappings {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Move a line up/down
   nnoremap <A-j> :m .+1<CR>==
@@ -642,8 +659,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Function key mappings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Function key mappings {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "       Norm            Shift           Ctrl    Alt
 " F1    help            -               help    -
@@ -709,8 +726,9 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Template handling
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Template handling {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define the template names
   autocmd BufNewFile * silent! 0r ~/.vim/templates/%:e.template
@@ -733,9 +751,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Spell checking {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pressing ,ss will toggle and untoggle spell checking
   map <leader>ss      	:setlocal spell!<cr>
@@ -749,9 +766,16 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Plugin Settings {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin Settings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Open a list of buffers
+  map <Leader>b         :CtrlPBuffer<cr>
+
+  nnoremap <Leader>fu :CtrlPFunky<Cr>
+" narrow the list down with a word under cursor
+  nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+
 " Mappings for NERTDTree
   map <C-n>   			:NERDTreeToggle<cr>
 
@@ -787,8 +811,9 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Misc
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Misc {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
   noremap <Leader>m     mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
@@ -802,8 +827,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" => Helper functions {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
@@ -926,4 +951,55 @@ function! NumberToggle()
         set nonumber
     endif
 endfunc
+
+function! CloseHiddenBuffers()
+    " Tableau pour memoriser la visibilite des buffers
+    let visible = {}
+    " Pour chaque onglet...
+    for t in range(1, tabpagenr('$'))
+        " Et pour chacune de ses fenetres...
+        for b in tabpagebuflist(t)
+            " On indique que le buffer est visible.
+            let visible[b] = 1
+        endfor
+    endfor
+    " Pour chaque numero de buffer possible...
+    for b in range(1, bufnr('$'))
+        " Si b est un numero de buffer valide et qu'il n'est pas visible, on le
+        " supprime.
+        if bufexists(b) && !has_key(visible, b)
+            " On ferme donc tous les buffers qui ne valent pas 1 dans le tableau et qui
+            " sont pourtant charges en memoire.
+            execute 'bwipeout' b
+        endif
+    endfor
+endfun
+
+
+function! CloseHiddenBuffers()
+    " Tableau pour memoriser la visibilite des buffers
+    let visible = {}
+    " Pour chaque onglet...
+    for t in range(1, tabpagenr('$'))
+        " Et pour chacune de ses fenetres...
+        for b in tabpagebuflist(t)
+            " On indique que le buffer est visible.
+            let visible[b] = 1
+        endfor
+    endfor
+    " Pour chaque numero de buffer possible...
+    for b in range(1, bufnr('$'))
+        " Si b est un numero de buffer valide et qu'il n'est pas visible, on le
+        " supprime.
+        if bufexists(b) && !has_key(visible, b)
+            " On ferme donc tous les buffers qui ne valent pas 1 dans le tableau et qui
+            " sont pourtant charges en memoire.
+            execute 'bwipeout' b
+        endif
+    endfor
+endfun
+" :call CloseHiddenBuffers()
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
