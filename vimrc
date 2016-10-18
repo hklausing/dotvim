@@ -42,12 +42,17 @@
 "    -> Misc
 "    -> Helper functions
 "
-" Notes:
+" Notes: 
 "   zM - close all open markers
 "   zR - open all closed markers
 "   zo - opens a fold at cursor
 "   zc - closes a fold at cursor
 "   :mkview - stores folds
+"
+" Box-drawing characters: ┐ └ ┘ ├ ┌ ┤ ┬ ┴ ┼ │ ─
+"                         ┓ ┗ ┓ ┣ ┏ ┫ ┳ ┻ ╋ ┃ ━
+"                         ╗ ╚ ╗ ╠ ╔ ╣ ╦ ╩ ╬ ║ ═
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
@@ -81,173 +86,38 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " check if Vundle is available before it can be used.
   if !empty(glob("~/.vim/bundle/Vundle.vim/autoload/vundle.vim"))
-    " Install plugins   :PluginInstall
-    " Show help         :h vundle
 
-    " Set 'nocompatible' to ward off unexpected things that your distro might
-    " have made, as well as sanely reset options when re-sourcing .vimrc
-      set nocompatible              " This is required
-      filetype off                  " This is required
-
-    " Here you set up the runtime path
-      set rtp+=~/.vim/bundle/Vundle.vim
+      set nocompatible                          "┬ Require for vundle
+      filetype off                              "┘
+      set rtp+=~/.vim/bundle/Vundle.vim         " Here you set up the runtime path
 
     " Initialize vundle
       call vundle#begin()
 
-    " This should always be the first
-      Plugin 'gmarik/Vundle.vim'
-
-    " Plugin from http://vim-scripts.org/vim/scripts.html
-    " Required for vim-fugitive
-      Plugin 'L9'
-
-    " This examples are from https://github.com/gmarik/Vundle.vim README
-    " Help: fugitive
-       Plugin 'tpope/vim-fugitive'
-
-    " Sparkup lets you write HTML code faster
-    " Usage: <Ctrl>e    in a .html file
-     "Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-
-    " Solarized Colorscheme for Vim Description
-      Plugin 'altercation/vim-colors-solarized'
-
-
-    " *****************************
-    " *** Status line format
-    " *****************************
-    "Every Plugin should be before this line
-    "
-    " status/tabline for vim without Python.
-    " Help: airline
-"     Plugin 'bling/vim-airline'
+      Plugin 'gmarik/Vundle.vim'                " This should always be the first
+      Plugin 'L9'                               " Required for vim-fugitive
+      Plugin 'tpope/vim-fugitive'
+      Plugin 'altercation/vim-colors-solarized' " Solarized Colorscheme for Vim Description
       Plugin 'vim-airline/vim-airline'
-"     Plugin 'vim-airline/vim-airline-themes'
-
-    " *****************************
-    " *** Test navigation and
-    " *** modification
-    " *****************************
-
-    " tcomment provides easy to use, file-type sensible comments for
-    " Vim. It can handle embedded syntax.
-    " Usage: <v>gc or gcc
-    " Help: tcomment
+     "Plugin 'vim-airline/vim-airline-themes'
       Plugin 'tomtom/tcomment_vim'
-
-    " 'surroundings': parentheses, brackets, quotes, XML tags, and more
-    " Usage: cs"', ds', ...
-    " Help: surround
       Plugin 'tpope/vim-surround'
-
-    " Graph your Vim undo tree in style.
-    " Usage: F6
-    " Help:
-      Plugin 'sjl/gundo.vim'
-
-
-
-    " *****************************
-    " *** file/directory navigation
-    " *****************************
-    "
-    "Plugin 'jeetsukumaran/vim-buffergator'
-
-
-    " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
-    " Usage: <Ctrl>p
-    " Help: ctrlp
+      Plugin 'sjl/gundo.vim'                    " Graph your Vim undo tree in style.
       Plugin 'ctrlpvim/ctrlp.vim'
       Plugin 'tacahiroy/ctrlp-funky'
-
-    " Followed by: http://vimawesome.com/
-    " The NERD tree allows you to explore your file system and to open files and directories
-    " Usage: <Ctrl>n
-    " Help:
       Plugin 'scrooloose/nerdtree'
-
-
-    " *****************************
-    " *** Search helpers
-    " *****************************
-
-    " Run your favorite search tool from Vim, with an enhanced results list.
-    " Usage: :Ack pattern
-    " Help: ack
       Plugin 'mileszs/ack.vim'
-
-
-    " *****************************
-    " *** Helper functions
-    " *****************************
-
-"   " Solarized Colorscheme for Vim Description
-"     Plugin 'altercation/vim-colors-solarized'
-
-    " line up text
-    " Usage:  :'<,'>Tabularize /=
-    " Help: tabular
-"     Plugin 'godlygeek/tabular'
-
-    " A simple, easy-to-use Vim alignment plugin.
-    " Usage: vipga=
-    " Help EasyAlign
       Plugin 'junegunn/vim-easy-align'
-
-"   " Convenient ways to quickly reach the buffer/file/command/bookmark/tag
-"   " Usage: fuff abc
-"   " <C-P> -> select a file -> <C-T> open file in new tab
-"   "          -             -> <CR> open file in current tab
-"   "          -             -> <C-V> open file in vertical-split window
-"   " Help: fuzzyfinder
-"     Plugin 'FuzzyFinder'
-"     Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-
-    " Auto completion
-    " Usage: type text and press <TAB>
-    " Help: supertab
-"     Plugin 'ervandew/supertab'
-     "Plugin 'Valloric/YouCompleteMe'
-
-    " Integrates the grep, fgrep, egrep, and agrep tools
-    " Usage: Bgrep [-i] pattern
-    " Help: see bundle/grep/plugin/grep.vim
       Plugin 'yegappan/grep'
-
-    " causes all trailing whitespace characters (spaces and tabs) to be highlighted
-    " Usage:
-    " Help:
       Plugin 'ntpeters/vim-better-whitespace'
-
-
-    " *****************************
-    " Development related plugins
-    " *****************************
-
-    " Syntax checking hacks for vim
-    " Usage:
-    " Help:
      "Plugin 'scrooloose/syntastic'
-
-    " Interface to perldoc. you can get perldoc with integrated operation for vim.
-    " Usage: select word and press K
-    " Help:
-      "Plugin 'hotchpotch/perldoc-vim'
-
-    " Ruby support for Vim/gVim.
-    " Usage: show help with h vim-ruby
-    " Help:
+     "Plugin 'hotchpotch/perldoc-vim'
      "Plugin 'perl-support.vim'
-
-    "
-    " Usage:
-    " Help:
      "Plugin 'vim-ruby/vim-ruby'
+      Plugin 'xolox/vim-misc'                   "┐
+      Plugin 'xolox/vim-session'                "┴ management to load & open sessions
 
-
-    " End of plugin definitions for vundle
-      call vundle#end()           " required
+      call vundle#end()                         " required
 
   endif
 
