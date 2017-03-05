@@ -15,4 +15,5 @@
 
 # Plugin directories
 bundle/*
-view
+view/
+sessions/

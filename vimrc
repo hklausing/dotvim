@@ -49,9 +49,18 @@
 "   zc - closes a fold at cursor
 "   :mkview - stores folds
 "
-" Box-drawing characters: + + + + + ¦ - - + ¦ -
-"                         ? ? ? ? ? ? ? ? ? ? ?
-"                         + + + ¦ + ¦ - - + ¦ -
+" Bash:
+"   If the bash is started from gvim no colors are displayed.
+"   The color codes of the PS1 variable diaplayed as their
+"   codes, which makes the prompt unreadable. This can be
+"   solved by adding the following code to the .bashrc file:
+"     --------------------------------
+"     # bash start from gvim
+"     if [ "$TERM" = "dumb" ]; then
+"         PS1='\u@\h (\W) \$ '
+"     fi
+"     --------------------------------
+"
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -86,8 +95,6 @@ filetype off                  " This is required for vundle
 
 
 
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " => Plugin Manager {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -106,7 +113,6 @@ if !empty(glob("~/.vim/bundle/Vundle.vim/autoload/vundle.vim"))
   Plugin 'gmarik/Vundle.vim'                " This should always be the first
   "
   " start with user selected plugin list:
-  "
   Plugin 'xolox/vim-misc'                 " used for vim-session
   Plugin 'xolox/vim-session'              " Extended session management for vim to store/restore working sessions
   Plugin 'tomtom/tcomment_vim'            " tcomment provides easy to use, file-type sensible comments for
@@ -123,13 +129,14 @@ if !empty(glob("~/.vim/bundle/Vundle.vim/autoload/vundle.vim"))
   Plugin 'yegappan/grep'                  " Integrates the grep, fgrep, egrep, and agrep tools
   Plugin 'nathanaelkane/vim-indent-guides' " Indent Guides is a plugin for visually displaying indent levels in Vim.
   Plugin 'robcsi/viewmaps.vim'
-  Plugin 'vim-airline/vim-airline'        "-- status/tabline for vim that's light as air
+  Plugin 'vim-airline/vim-airline'        "+- status/tabline for vim that's light as air
   Plugin 'vim-airline/vim-airline-themes' "+
   Plugin 'vim-syntastic/syntastic'        " syntax checking
   "Plugin 'hotchpotch/perldoc-vim'
   "Plugin 'perl-support.vim'
   "Plugin 'vim-ruby/vim-ruby'
   "Plugin 'rhysd/github-complete.vim'      " Vim input completion for GitHub
+  Plugin 'vim-scripts/SearchComplete'     " Tab completion of words inside of a search ('/')
 
   if v:version > 701
     "Plugin 'bling/vim-airline'            " status/tabline for vim without Python.
@@ -240,8 +247,18 @@ function! SetupPluginOptions()
   """""""""""""""""""""""""
   if !empty(glob("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
     " Setup for vim-colors-solarized
-    " Toggle the backgound color
-    call togglebg#map("<A-F7>")
+    "
+    " use this command before the first use of colorschem solarized
+    if !has('gui_running')
+      let g:solarized_termcolors=256
+    endif
+    "
+    syntax enable
+    set background=dark
+    "set background=light
+    colorscheme solarized
+    " required to activate ToggleBG
+    call togglebg#map("")
     "
   endif
 
@@ -262,11 +279,7 @@ function! SetupPluginOptions()
   endif
 
 
-"let g:SuperTabDefaultCompletionType = "<c-a>"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-
 endfunction   " SetupPluginOptions()
-
 
 
 
@@ -281,11 +294,11 @@ filetype indent on
 
 
 " Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
+set so=5
 
 " Search down into subfolders. Provides tab-completion for all
 " file-related tasks.
-set path+=./**
+set path+=**
 
 " Turn on the Wild menu
 set wildmenu
@@ -351,8 +364,7 @@ set clipboard+=unnamed
 
 " Show line numbers at startup with absolute numbers; Toggel of this
 " feature is assigned to F5.
-set number
-set norelativenumber
+autocmd BufReadPost * call NumberToggle("rel-number")
 
 " Auto fold settings
 set foldmethod=marker
@@ -366,11 +378,8 @@ set foldmethod=marker
 " Enable syntax highlighting
 syntax enable
 
-" use 256 colors
-set t_Co=256
-
-" set background color to the default value dark
-set background=dark
+"" use 256 colors
+"set t_Co=256
 
 " color handling if altercation/vim-colors-solarized is loaded
 if !empty(glob("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
@@ -399,11 +408,13 @@ if !empty(glob("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
     let g:solarized_menu       = 0
   end
 
-  " define colorscheme
-  "let g:solarized_termcolors=256
-  colorscheme solarized
-
 else
+
+  " use 256 colors
+  set t_Co=256
+
+  " set background color to the default value dark
+  set background=dark
 
   " set these settings if vim-colors-sloarized is not found
   colorscheme mustang         " background is handled by scheme
@@ -537,29 +548,28 @@ set wrap            " Wrap lines
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
-"  vnoremap <silent> * :call ('f')<CR>
-"  vnoremap <silent> # :call VisualSelection('b')<CR>
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
+
 
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " => Moving around, tabs, windows and buffers {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Treat long lines as break lines (useful when moving around in them)
-map j           gj
-map k           gk
-
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space>     /
-map <c-space>   ?
+"" Treat long lines as break lines (useful when moving around in them)
+"map j           gj
+"map k           gk
+"
+"" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+"map <space>     /
+"map <c-space>   ?
 
 " Disable highlight when <leader><CR> is pressed
 map <silent> <leader><CR> :noh<CR>
 
 " Close the current buffer
-map <leader>bd  :Bclose<CR>
+map <leader>bd  :bdelete<CR>
 
 " Close all buffers
 map <leader>ba  :1,1000 bd!<CR>
@@ -685,31 +695,30 @@ inoremap <A-k>    <Esc>:m .-2<CR>==gi
 vnoremap <A-j>    :m '>+1<CR>gv=gv
 vnoremap <A-k>    :m '<-2<CR>gv=gv
 
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+" Delete trailing white space on save, useful for Python
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.py         :call DeleteTrailingWS()
+autocmd BufWrite *.sh         :call DeleteTrailingWS()
+autocmd BufWrite *.pl,*pm     :call DeleteTrailingWS()
 
 " Quickly edit the vimrc file in a new tab
 nmap <silent> <leader>ev    :tabedit $MYVIMRC<CR>
 
 " Quickly source the vimrc file
-nmap <silent> <leader>sv    :source $MYVIMRC<CR>
+nmap <silent> <leader>sv    :source $MYVIMRC <bar> echon "source done." <bar> sleep 750m<CR>
 
 " Fast saving
-nmap <leader>w      :w!<CR>
+nnoremap <leader>w          :w!<CR>
 
 " Fast saving all tabs
-nmap <leader>W      :wa!<CR>
+nnoremap <leader>W          :wa!<CR>
 
-" Modifications related to German keyboard layout
-"verbose nmap <C-]>
-nnoremap <C-]>    <C-]>
-nnoremap <C-[>    <C-[>
+" Start a bash within vim
+nnoremap <leader>r          :!bash<CR>
 
 
 
@@ -728,9 +737,9 @@ nnoremap <C-[>    <C-[>
 " F8    next buffer     previous buffer toggleTagBar    toggle_list
 " F9    -               toggle_whitespc -               -
 " F10   show_spaces     trim_spaces     -       -
-" F11   -               -               -               -
+" F11   X               -               -               -
 " F12   show_spaces     -               -               -
-" Note: X = system related key combinations
+" Note: X = system related key combinations in GUI
 
 "
 " folding
@@ -740,27 +749,28 @@ onoremap <F2>         <C-C>za
 vnoremap <F2>         zf
 
 " open vertical explorer window
-map <F3>              :Vexplore<CR>
-map <s-F3>            :Hexplore<CR>
+nnoremap <F3>         :Vexplore<CR>
+nnoremap <s-F3>       :Hexplore<CR>
 
 " toggle highlighted matches
-nmap <F4>             :set hls! <CR>
-" hit '/' highlights then enter search mode
-nnoremap /            :set hlsearch<CR>/
+nnoremap <F4>         :set hlsearch!<CR>
 
 " toggle case sensitivity for searching
 nnoremap <S-F4>       :set ignorecase! <bar> set ignorecase?<CR>
 
 " Toggle line number
-nnoremap <F5>         :call NumberToggle()<CR>
-inoremap <F5> <ESC>   :call NumberToggle()<CR>i
-vnoremap <F5> <ESC>   :call NumberToggle()<CR>gv
+nnoremap <F5>         :call NumberToggle("next")<CR>
+inoremap <F5>         <ESC>:call NumberToggle("next")<CR>i
+vnoremap <F5>         <ESC>:call NumberToggle("next")<CR>gv
 
 " hit F11 to paste
 set pastetoggle=<S-F5>
 
 " Toggle spellcheck
 nnoremap <A-F5>       :setlocal spell! spelllang=en_us<CR>
+
+" Toggle background color between dark and light
+nnoremap <A-F7>       :ToggleBG<CR>
 
 " Next buffer
 nnoremap <F8>         :bn<CR>
@@ -780,18 +790,17 @@ nnoremap <F10>        :ToggleWhitespace<CR>
 " Trim trailing spaces
 nnoremap <S-F10>      :StripWhitespace<CR>
 
-
 "
 " Font size change
-" ... increase font size
+" ... increase font size <Ctrl><+>
 inoremap <C-kPlus>    <ESC>:call EnlargeFont()<CR>i
 nnoremap <C-kPlus>    :call EnlargeFont()<CR>
 
-" ... decrease font size
+" ... decrease font size <Ctrl><->
 inoremap <C-kMinus>   <ESC>:call ShrinkFont()<CR>i
 nnoremap <C-kMinus>   :call ShrinkFont()<CR>
 
-" ... set font size to default value
+" ... set font size to default value <Ctrl><0>
 inoremap <C-k0>       <ESC>:call SetDefaultFontSize()<CR>i
 nnoremap <C-k0>       :call SetDefaultFontSize()<CR>
 
@@ -1019,29 +1028,48 @@ set guitablabel=%{GuiTabLabel()}
 "
 if v:version > 703
 
-  function! NumberToggle()
-    if(&g:relativenumber == 0 && &g:number == 0)
+  function! NumberToggle(number_type)
+    let donext = a:number_type
+    " get the next number type
+    if(a:number_type == "next")
+      if(&g:relativenumber == 0 && &g:number == 0)
+        " Absolute numbers.
+        let donext = "abs-number"
+      elseif(&g:relativenumber == 0 && &g:number == 1)
+        " Relative numbers with highlighted absolute number.
+        let donext = "rel-number"
+      elseif(&g:relativenumber == 1 && &g:number == 1)
+        " Relative numbers with highlighted reference number (0).
+        let donext = "rel-number0"
+      else
+        " No line numbers.
+        let donext = "no-number"
+      endif
+    endif
+    " set the number type
+    if(donext == "no-number")
+      " No line numbers.
+      set norelativenumber
+      set nonumber
+    elseif(donext == "abs-number")
       " Absolute numbers.
       set norelativenumber
       set number
-    elseif(&g:relativenumber == 0 && &g:number == 1)
+    elseif(donext == "rel-number")
       " Relative numbers with highlighted absolute number.
       set relativenumber
       set number
-    elseif(&g:relativenumber == 1 && &g:number == 1)
+    else
       " Relative numbers with highlighted reference number (0).
       set relativenumber
-      set nonumber
-    else
-      " No line numnbers.
-      set norelativenumber
       set nonumber
     endif
   endfunc
 
 else
 
-  function! NumberToggle()
+  function! NumberToggle(type)
+    " type has a dummy function!
     set number!
   endfunc
 
