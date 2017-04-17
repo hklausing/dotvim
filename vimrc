@@ -6,7 +6,7 @@
 "           Based on Amir Salihefendic, http://amix.dk/vim/vimrc.html
 "
 " Version:
-"       1.2.0 - 2017-03-01
+"       1.2.1 - 2017-04-17
 "
 " Blog_post:
 "       -
@@ -137,6 +137,8 @@ if !empty(glob("~/.vim/bundle/Vundle.vim/autoload/vundle.vim"))
   "Plugin 'vim-ruby/vim-ruby'
   "Plugin 'rhysd/github-complete.vim'      " Vim input completion for GitHub
   Plugin 'vim-scripts/SearchComplete'     " Tab completion of words inside of a search ('/')
+                                          " wget -O mthesaur.txt https://raw.githubusercontent.com/zeke/moby/master/words.txt
+  Plugin 'ron89/thesaurus_query.vim'      " To lookup synonyms of any word under cursor
 
   if v:version > 701
     "Plugin 'bling/vim-airline'            " status/tabline for vim without Python.
@@ -276,6 +278,16 @@ function! SetupPluginOptions()
     " Avoid question about save of current session status.
     " for xolox/vim-session
     :let g:session_autoload = 'no'
+  endif
+
+  """""""""""""""""""""""""
+  if exists("g:loaded_thesaurus_query")
+    "
+    " Plugin: reedes/vim-lexical
+   "nnoremap <Leader>cs :ThesaurusQueryReplaceCurrentWord<CR>
+    "
+else
+    message "not found!"
   endif
 
 
@@ -462,8 +474,8 @@ if has("gui_running")
   set guioptions-=T           " no toolbar
   set guioptions-=e           " disable GUI-tabs
 
-  if has("gui_gtk2")
-    "echo "GUI-Type: gui_gtk2"
+  if has("gui_gtk2") || has("gui_gtk3")
+    "echo "GUI-Type: gui_gtk2 or gui_gtk3"
     let font = {"name" : "Hack", "size" : "11" }
     call system("fc-list -q " . font.name)
     if has("unix") && !v:shell_error
@@ -512,9 +524,9 @@ autocmd BufWinEnter * set foldmethod=manual | normal zE
 
 " Copy file name to clipboard
 " just the file name
-nmap <Leader>cs   :let @*=expand("%")<CR>
+nmap <Leader>fn   :let @*=expand("%")<CR>
 " file name with path
-nmap <Leader>cl   :let @*=expand("%:p")<CR>
+nmap <Leader>fp   :let @*=expand("%:p")<CR>
 
 
 
@@ -739,7 +751,7 @@ nnoremap <leader>r          :!bash<CR>
 " F10   show_spaces     trim_spaces     -       -
 " F11   X               -               -               -
 " F12   show_spaces     -               -               -
-" Note: X = system related key combinations in GUI
+" Note: X = system related key combinations in GUI, cannot be used by gvim
 
 "
 " folding
@@ -886,12 +898,12 @@ nmap ga <Plug>(EasyAlign)
 " gundo
 nnoremap <F6>           :GundoToggle<CR>
 
-" For plugin vim-better-whitespace
-if v:version > 703
-  nnoremap <F10>        :ToggleWhitespace<CR>
-  nnoremap <S-F10>      :StripWhitespace<CR>
-  vnoremap <S-F10>      :StripWhitespace<CR>
-endif
+"" For plugin vim-better-whitespace
+"if v:version > 703
+"  nnoremap <F10>        :ToggleWhitespace<CR>
+"  nnoremap <S-F10>      :StripWhitespace<CR>
+"  vnoremap <S-F10>      :StripWhitespace<CR>
+"endif
 
 
 
@@ -1100,13 +1112,37 @@ function! CloseHiddenBuffers()
       execute 'bwipeout' b
     endif
   endfor
-endfun
+endfunc
 " :call CloseHiddenBuffers()
 
 
 
 " Finish setup of plugins
 autocmd VimEnter * call SetupPluginOptions()
+
+
+"
+" WordProcessorMode()
+" Make paragraph and press gq
+function! WordProcessorMode()
+  setlocal formatoptions=1
+  setlocal noexpandtab
+  " correct word under cursor
+  map ?		      z=
+  " Treat long lines as break lines (useful when moving around in them)
+  map j           gj
+  map k           gk
+  setlocal spell spelllang=en_us
+  set thesaurus+=/home/${USER}/.vim/thesaurus/mthesaur.txt
+  set complete+=s
+  setlocal wrap
+  setlocal linebreak
+  setlocal textwidth=70
+endfunc
+
+command! WP call WordProcessorMode()
+
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
