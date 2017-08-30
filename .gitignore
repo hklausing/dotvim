@@ -4,6 +4,7 @@
 
 # Temporary files
 *.swp
+*.new
 
 # Build files
 /.netrwhist
@@ -17,3 +18,9 @@
 bundle/*
 view/
 sessions/
+
+# ???
+indent/
+spell/
+syntax/
+
