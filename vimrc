@@ -92,6 +92,8 @@ nmap <leader>wa     :wa!<CR>
 set nocompatible              " Use the full vim feature set
 filetype off                  " This is required for vundle
 
+"???? solve CtrlPBuffer issue
+set shell=/bin/bash
 
 
 
@@ -113,52 +115,51 @@ if !empty(glob("~/.vim/bundle/Vundle.vim/autoload/vundle.vim"))
   Plugin 'gmarik/Vundle.vim'                " This should always be the first
   "
   " start with user selected plugin list:
-  Plugin 'xolox/vim-misc'                 " used for vim-session
-  Plugin 'xolox/vim-session'              " Extended session management for vim to store/restore working sessions
-  Plugin 'tomtom/tcomment_vim'            " tcomment provides easy to use, file-type sensible comments for
-  Plugin 'tpope/vim-surround'             " 'surroundings': parentheses, brackets, quotes, XML tags, and more
-  Plugin 'sjl/gundo.vim'                  " Graph your Vim undo tree in style. <F6>
-  Plugin 'geoffharcourt/vim-matchit'      " select <tag> and press %
+":  Plugin 'xolox/vim-misc'                 " used for vim-session
+":  Plugin 'xolox/vim-session'              " Extended session management for vim to store/restore working sessions
+":  Plugin 'tomtom/tcomment_vim'            " tcomment provides easy to use, file-type sensible comments for
+":  Plugin 'tpope/vim-surround'             " 'surroundings': parentheses, brackets, quotes, XML tags, and more
+":  Plugin 'sjl/gundo.vim'                  " Graph your Vim undo tree in style. <F6>
+":  Plugin 'geoffharcourt/vim-matchit'      " select <tag> and press %
   Plugin 'ctrlpvim/ctrlp.vim'             " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
   Plugin 'tacahiroy/ctrlp-funky'          " Simple function navigator for ctrlp.vim
   Plugin 'mileszs/ack.vim'                " Run your favorite search tool from Vim
   Plugin 'altercation/vim-colors-solarized'
-  Plugin 'godlygeek/tabular'              " Vim script for text filtering and alignment; e.g. ':Tab /='
-  Plugin 'junegunn/vim-easy-align'        " EasyAlign
+":  Plugin 'godlygeek/tabular'              " Vim script for text filtering and alignment; e.g. ':Tab /='
+":  Plugin 'junegunn/vim-easy-align'        " EasyAlign
   Plugin 'ervandew/supertab'              " Auto completion
-  Plugin 'yegappan/grep'                  " Integrates the grep, fgrep, egrep, and agrep tools
-  Plugin 'nathanaelkane/vim-indent-guides' " Indent Guides is a plugin for visually displaying indent levels in Vim.
-  Plugin 'robcsi/viewmaps.vim'
+":  Plugin 'yegappan/grep'                  " Integrates the grep, fgrep, egrep, and agrep tools
+":  Plugin 'nathanaelkane/vim-indent-guides' " Indent Guides is a plugin for visually displaying indent levels in Vim.
+":  Plugin 'robcsi/viewmaps.vim'
   Plugin 'vim-airline/vim-airline'        "+- status/tabline for vim that's light as air
   Plugin 'vim-airline/vim-airline-themes' "+
   Plugin 'vim-syntastic/syntastic'        " syntax checking
-  "Plugin 'hotchpotch/perldoc-vim'
-  "Plugin 'perl-support.vim'
-  "Plugin 'vim-ruby/vim-ruby'
-  "Plugin 'rhysd/github-complete.vim'      " Vim input completion for GitHub
-  Plugin 'vim-scripts/SearchComplete'     " Tab completion of words inside of a search ('/')
-                                          " wget -O mthesaur.txt https://raw.githubusercontent.com/zeke/moby/master/words.txt
-  Plugin 'ron89/thesaurus_query.vim'      " To lookup synonyms of any word under cursor
-
-  if v:version > 701
-    "Plugin 'bling/vim-airline'            " status/tabline for vim without Python.
-    "Plugin 'vim-scripts/AutoComplPop'     " Automatically opens popup menu for completions
-    Plugin 'Shougo/neocomplcache.vim'     " Ultimate auto completion system for Vim
-    Plugin 'majutsushi/tagbar'            " Provides an easy way to browse the tags of the current file.
-  endif
-
+":  "Plugin 'hotchpotch/perldoc-vim'
+":  "Plugin 'perl-support.vim'
+":  "Plugin 'vim-ruby/vim-ruby'
+":  "Plugin 'rhysd/github-complete.vim'      " Vim input completion for GitHub
+":  Plugin 'vim-scripts/SearchComplete'     " Tab completion of words inside of a search ('/')
+":                                          " wget -O mthesaur.txt https://raw.githubusercontent.com/zeke/moby/master/words.txt
+":  Plugin 'ron89/thesaurus_query.vim'      " To lookup synonyms of any word under cursor
+":
+":  if v:version > 701
+":    "Plugin 'vim-scripts/AutoComplPop'     " Automatically opens popup menu for completions
+":    Plugin 'Shougo/neocomplcache.vim'     " Ultimate auto completion system for Vim
+":    Plugin 'majutsushi/tagbar'            " Provides an easy way to browse the tags of the current file.
+":  endif
+":
   if v:version > 703
     Plugin 'L9'                           " Required for vim-fugitive
     Plugin 'tpope/vim-fugitive'           " a Git wrapper
-    Plugin 'jlanzarotta/bufexplorer'      " Can quickly and easily switch between buffers
+":    Plugin 'jlanzarotta/bufexplorer'      " Can quickly and easily switch between buffers
     Plugin 'scrooloose/nerdtree'          " The NERD tree allows you to explore your file system
     Plugin 'Xuyuanp/nerdtree-git-plugin'  "
     Plugin 'ntpeters/vim-better-whitespace' " StripWhitespace, :ToggleWhitespace
   endif
-
-  if has("python")
-    Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}    " Sparkup lets you write HTML code faster
-  endif
+":
+":  if has("python")
+":    Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}    " Sparkup lets you write HTML code faster
+":  endif
 
   " End of plugin definitions for vundle
   call vundle#end()                       " required
@@ -171,37 +172,37 @@ endif   " if !empty(glob("~/.vim/bundle/Vundle.vim/autoload/vundle.vim"))
 " is usable.
 function! SetupPluginOptions()
 
-  """""""""""""""""""""""""
-  if exists("g:loaded_easy_align_plugin")
-    " Setting for EasyAlign
-    " Start interactive EasyAlign in visual mode (e.g. vipga)
-    xmap ga            <Plug>(EasyAlign)
-    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-    nmap ga            <Plug>(EasyAlign)
-    "
-  endif
-
-  """""""""""""""""""""""""
-  if exists("g:loaded_viewmaps")
-    " Setting for Viewmaps
-    "display normal mode maps
-    nnoremap <silent> <leader>dn :ViewMaps n quickfix<CR>
-    "display insert mode maps
-    nnoremap <silent> <leader>di :ViewMaps i quickfix<CR>
-    "display visual mode maps
-    nnoremap <silent> <leader>dv :ViewMaps v quickfix<CR>
-    "display select mode maps
-    nnoremap <silent> <leader>ds :ViewMaps s quickfix<CR>
-    "display operator mode maps
-    nnoremap <silent> <leader>do :ViewMaps o quickfix<CR>
-    "display command mode maps
-    nnoremap <silent> <leader>dc :ViewMaps c quickfix<CR>
-  endif
+":  """""""""""""""""""""""""
+":  if exists("g:loaded_easy_align_plugin")
+":    " Setting for EasyAlign
+":    " Start interactive EasyAlign in visual mode (e.g. vipga)
+":    xmap ga            <Plug>(EasyAlign)
+":    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+":    nmap ga            <Plug>(EasyAlign)
+":    "
+":  endif
+":
+":  """""""""""""""""""""""""
+":  if exists("g:loaded_viewmaps")
+":    " Setting for Viewmaps
+":    "display normal mode maps
+":    nnoremap <silent> <leader>dn :ViewMaps n quickfix<CR>
+":    "display insert mode maps
+":    nnoremap <silent> <leader>di :ViewMaps i quickfix<CR>
+":    "display visual mode maps
+":    nnoremap <silent> <leader>dv :ViewMaps v quickfix<CR>
+":    "display select mode maps
+":    nnoremap <silent> <leader>ds :ViewMaps s quickfix<CR>
+":    "display operator mode maps
+":    nnoremap <silent> <leader>do :ViewMaps o quickfix<CR>
+":    "display command mode maps
+":    nnoremap <silent> <leader>dc :ViewMaps c quickfix<CR>
+":  endif
 
   """""""""""""""""""""""""
   if exists('g:loaded_ctrlp')
     " ctrlp.vim Open a selection list of buffers.
-    nnoremap <c-b>    :CtrlPBuffer<CR>
+    nnoremap <C-B>    :CtrlPBuffer<CR>
     "
     if get(g:, 'loaded_ctrlp_funky', 0)
       " for plugin ctrlp/funky.vim
@@ -240,11 +241,11 @@ function! SetupPluginOptions()
     map <C-N>   :NERDTreeToggle<CR>
   endif
 
-  """""""""""""""""""""""""
-  if exists('g:loaded_tagbar')
-    " tagbar
-    noremap <F7>      :TagbarToggle<cr>
-  endif
+":  """""""""""""""""""""""""
+":  if exists('g:loaded_tagbar')
+":    " tagbar
+":    noremap <F7>      :TagbarToggle<cr>
+":  endif
 
   """""""""""""""""""""""""
   if !empty(glob("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
@@ -264,32 +265,32 @@ function! SetupPluginOptions()
     "
   endif
 
-  """""""""""""""""""""""""
-  if exists("g:loaded_indent_guides")
-    "
-    " Plugin: nathanaelkane/vim-indent-guides
-    let g:indent_guides_start_line = 2
-    let g:indent_guides_guide_size = 1
-    "
-  endif
-
-  """""""""""""""""""""""""
-  if !empty(glob("~/.vim/bundle/vim-session/plugin/session.vim"))
-    " Avoid question about save of current session status.
-    " for xolox/vim-session
-    :let g:session_autoload = 'no'
-  endif
-
-  """""""""""""""""""""""""
-  if exists("g:loaded_thesaurus_query")
-    "
-    " Plugin: reedes/vim-lexical
-   "nnoremap <Leader>cs :ThesaurusQueryReplaceCurrentWord<CR>
-    "
-else
-    message "not found!"
-  endif
-
+":  """""""""""""""""""""""""
+":  if exists("g:loaded_indent_guides")
+":    "
+":    " Plugin: nathanaelkane/vim-indent-guides
+":    let g:indent_guides_start_line = 2
+":    let g:indent_guides_guide_size = 1
+":    "
+":  endif
+":
+":  """""""""""""""""""""""""
+":  if !empty(glob("~/.vim/bundle/vim-session/plugin/session.vim"))
+":    " Avoid question about save of current session status.
+":    " for xolox/vim-session
+":    :let g:session_autoload = 'no'
+":  endif
+":
+":  """""""""""""""""""""""""
+":  if exists("g:loaded_thesaurus_query")
+":    "
+":    " Plugin: reedes/vim-lexical
+":   "nnoremap <Leader>cs :ThesaurusQueryReplaceCurrentWord<CR>
+":    "
+":else
+":    message "not found!"
+":  endif
+":
 
 endfunction   " SetupPluginOptions()
 
@@ -389,9 +390,6 @@ set foldmethod=marker
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable
-
-"" use 256 colors
-"set t_Co=256
 
 " color handling if altercation/vim-colors-solarized is loaded
 if !empty(glob("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
@@ -555,13 +553,13 @@ set wrap            " Wrap lines
 
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" => Visual mode related {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :call VisualSelection('f')<CR>
-vnoremap <silent> # :call VisualSelection('b')<CR>
+":""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+":" => Visual mode related {{{
+":"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+":" Visual mode pressing * or # searches for the current selection
+":" Super useful! From an idea by Michael Naumann
+":vnoremap <silent> * :call VisualSelection('f')<CR>
+":vnoremap <silent> # :call VisualSelection('b')<CR>
 
 
 
@@ -579,25 +577,47 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 
 " Disable highlight when <leader><CR> is pressed
 map <silent> <leader><CR> :noh<CR>
+":
+"
+" *** Tabs
+"
+":" Useful mappings for managing tabs
+":map <leader>tn  :tabnew<CR>
+":map <leader>to  :tabonly<CR>
+":map <leader>tc  :tabclose<CR>
+":map <leader>tm  :tabmove
+":
+":" Opens a new tab with the current buffer's path
+":" Super useful when editing files in the same directory
+":map <leader>te    :tabedit <c-r>=expand("%:p:h")<CR>/
+":
+":" Switch CWD to the directory of the open buffer
+":map <leader>cd    :cd %:p:h<CR>:pwd<CR>
+":
+":" Return to last edit position when opening files (You want this!)
+":autocmd BufReadPost *
+":      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+":      \   exe "normal! g`\"" |
+":      \ endif
+":
+":" Remember info about open buffers on close
+":set viminfo^=%
+":
+":" makes changes to files that have read-only permissions for current user/group
+":cmap w!! %!sudo tee > /dev/null %
+":
+":" Shortcut for FuzzyFinder
+":map <leader>f     :FufFile<CR>
 
+"
+" *** Buffers
+"
 " Close the current buffer
-map <leader>bd  :bdelete<CR>
-
-" Close all buffers
-map <leader>ba  :1,1000 bd!<CR>
-
-" Useful mappings for managing tabs
-map <leader>tn  :tabnew<CR>
-map <leader>to  :tabonly<CR>
-map <leader>tc  :tabclose<CR>
-map <leader>tm  :tabmove
-
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te    :tabedit <c-r>=expand("%:p:h")<CR>/
-
-" Switch CWD to the directory of the open buffer
-map <leader>cd    :cd %:p:h<CR>:pwd<CR>
+map <C-End>  :bdelete<CR>
+":" Change to next buffer
+map <C-Right>  :bn<CR>
+":" Change to previous buffer
+map <C-Left>  :bp<CR>
 
 " Specify the behavior when switching between buffers
 try
@@ -609,21 +629,6 @@ try
   set showtabline=2
 catch
 endtry
-
-" Return to last edit position when opening files (You want this!)
-autocmd BufReadPost *
-      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-      \   exe "normal! g`\"" |
-      \ endif
-
-" Remember info about open buffers on close
-set viminfo^=%
-
-" makes changes to files that have read-only permissions for current user/group
-cmap w!! %!sudo tee > /dev/null %
-
-" Shortcut for FuzzyFinder
-map <leader>f     :FufFile<CR>
 
 
 
@@ -694,28 +699,28 @@ end
 
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" => Editing mappings {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Move a line up/down
-nnoremap <A-j>    :m .+1<CR>==
-nnoremap <A-k>    :m .-2<CR>==
-inoremap <A-j>    <Esc>:m .+1<CR>==gi
-inoremap <A-k>    <Esc>:m .-2<CR>==gi
-
-" Move selected lines up/down
-vnoremap <A-j>    :m '>+1<CR>gv=gv
-vnoremap <A-k>    :m '<-2<CR>gv=gv
-
-" Delete trailing white space on save, useful for Python
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py         :call DeleteTrailingWS()
-autocmd BufWrite *.sh         :call DeleteTrailingWS()
-autocmd BufWrite *.pl,*pm     :call DeleteTrailingWS()
+":""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+":" => Editing mappings {{{
+":"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+":" Move a line up/down
+":nnoremap <A-j>    :m .+1<CR>==
+":nnoremap <A-k>    :m .-2<CR>==
+":inoremap <A-j>    <Esc>:m .+1<CR>==gi
+":inoremap <A-k>    <Esc>:m .-2<CR>==gi
+":
+":" Move selected lines up/down
+":vnoremap <A-j>    :m '>+1<CR>gv=gv
+":vnoremap <A-k>    :m '<-2<CR>gv=gv
+":
+":" Delete trailing white space on save, useful for Python
+":func! DeleteTrailingWS()
+":  exe "normal mz"
+":  %s/\s\+$//ge
+":  exe "normal `z"
+":endfunc
+":autocmd BufWrite *.py         :call DeleteTrailingWS()
+":autocmd BufWrite *.sh         :call DeleteTrailingWS()
+":autocmd BufWrite *.pl,*pm     :call DeleteTrailingWS()
 
 " Quickly edit the vimrc file in a new tab
 nmap <silent> <leader>ev    :tabedit $MYVIMRC<CR>
@@ -753,22 +758,22 @@ nnoremap <leader>r          :!bash<CR>
 " F12   show_spaces     -               -               -
 " Note: X = system related key combinations in GUI, cannot be used by gvim
 
-"
-" folding
-inoremap <F2>         <C-O>za
-nnoremap <F2>         za
-onoremap <F2>         <C-C>za
-vnoremap <F2>         zf
-
-" open vertical explorer window
-nnoremap <F3>         :Vexplore<CR>
-nnoremap <s-F3>       :Hexplore<CR>
-
-" toggle highlighted matches
-nnoremap <F4>         :set hlsearch!<CR>
-
-" toggle case sensitivity for searching
-nnoremap <S-F4>       :set ignorecase! <bar> set ignorecase?<CR>
+":"
+":" folding
+":inoremap <F2>         <C-O>za
+":nnoremap <F2>         za
+":onoremap <F2>         <C-C>za
+":vnoremap <F2>         zf
+":
+":" open vertical explorer window
+":nnoremap <F3>         :Vexplore<CR>
+":nnoremap <s-F3>       :Hexplore<CR>
+":
+":" toggle highlighted matches
+":nnoremap <F4>         :set hlsearch!<CR>
+":
+":" toggle case sensitivity for searching
+":nnoremap <S-F4>       :set ignorecase! <bar> set ignorecase?<CR>
 
 " Toggle line number
 nnoremap <F5>         :call NumberToggle("next")<CR>
@@ -784,20 +789,20 @@ nnoremap <A-F5>       :setlocal spell! spelllang=en_us<CR>
 " Toggle background color between dark and light
 nnoremap <A-F7>       :ToggleBG<CR>
 
-" Next buffer
-nnoremap <F8>         :bn<CR>
-
-" Change to previous buffer
-nnoremap <S-F8>       :bp<CR>
-
-" Toggles view of unprintable characters
-noremap <A-F8>        :set list! <bar> set list?<CR>
-
-" Toggle displaying white-space characters.
-noremap <s-F9>        :set list!<CR>
-
+":" Next buffer
+":nnoremap <F8>         :bn<CR>
+":
+":" Change to previous buffer
+":nnoremap <S-F8>       :bp<CR>
+":
+":" Toggles view of unprintable characters
+":noremap <A-F8>        :set list! <bar> set list?<CR>
+":
+":" Toggle displaying white-space characters.
+":noremap <s-F9>        :set list!<CR>
+":
 " Toggle trailing white-spaces
-nnoremap <F10>        :ToggleWhitespace<CR>
+":nnoremap <F10>        :ToggleWhitespace<CR>
 
 " Trim trailing spaces
 nnoremap <S-F10>      :StripWhitespace<CR>
@@ -828,19 +833,19 @@ autocmd BufNewFile * silent! 0r ~/.vim/templates/%:e.template
 " Create the 'tags' file (may need to install ctags first!)
 command! MakeTags     !ctags -R .
 
-" Tweaks for file browsing
-let g:netrw_banner       = 0        " disable annoying banner
-let g:netrw_browse_split = 4  " open in prior window
-let g:netrw_altv         = 1          " open splits to the right
-let g:netrw_liststyle    = 3     " tree view
-let g:netrw_list_hide    = netrw_gitignore#Hide()
-let g:netrw_list_hide   .= ',\(^\|\s\s\)\zs\.\S\+'
-" NOW WE CAN:
-" - :edit a folder to open a file browser
-"    - <CR>/v/t to open in an h-split/v-split/tab
-" - check |netrw-browse-maps| for more mappings
-
-
+":" Tweaks for file browsing
+":let g:netrw_banner       = 0        " disable annoying banner
+":let g:netrw_browse_split = 4  " open in prior window
+":let g:netrw_altv         = 1          " open splits to the right
+":let g:netrw_liststyle    = 3     " tree view
+":let g:netrw_list_hide    = netrw_gitignore#Hide()
+":let g:netrw_list_hide   .= ',\(^\|\s\s\)\zs\.\S\+'
+":" NOW WE CAN:
+":" - :edit a folder to open a file browser
+":"    - <CR>/v/t to open in an h-split/v-split/tab
+":" - check |netrw-browse-maps| for more mappings
+":
+":
 " Insert Filename, type the keys very fast!
 " Insert file name without extension
 inoremap \fn <C-R>=expand("%:t:r")<CR>
@@ -876,27 +881,27 @@ map <leader>sc      z=
 
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" => Plugin Settings {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Syntastic
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list            = 1
-let g:syntastic_check_on_open            = 1
-let g:syntastic_check_on_wq              = 0
-
-" Looks up Perl command under cursor when K is pressed
-set keywordprg=perldoc\ -f
-
-" Setting for EasyAlign
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
-" gundo
-nnoremap <F6>           :GundoToggle<CR>
+":""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+":" => Plugin Settings {{{
+":"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+":
+":" Syntastic
+":let g:syntastic_always_populate_loc_list = 1
+":let g:syntastic_auto_loc_list            = 1
+":let g:syntastic_check_on_open            = 1
+":let g:syntastic_check_on_wq              = 0
+":
+":" Looks up Perl command under cursor when K is pressed
+":set keywordprg=perldoc\ -f
+":
+":" Setting for EasyAlign
+":" Start interactive EasyAlign in visual mode (e.g. vipga)
+":xmap ga <Plug>(EasyAlign)
+":" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+":nmap ga <Plug>(EasyAlign)
+":
+":" gundo
+":nnoremap <F6>           :GundoToggle<CR>
 
 "" For plugin vim-better-whitespace
 "if v:version > 703
@@ -904,19 +909,19 @@ nnoremap <F6>           :GundoToggle<CR>
 "  nnoremap <S-F10>      :StripWhitespace<CR>
 "  vnoremap <S-F10>      :StripWhitespace<CR>
 "endif
-
-
-
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" => Misc {{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m     mmHmt:%s/<C-V><CR>//ge<CR>'tzt'm
-
-" Quickly open a buffer for scribble
-map <leader>q         :e ~/buffer<CR>
+":
+":
+":
+":
+":
+":""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+":" => Misc {{{
+":"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+":" Remove the Windows ^M - when the encodings gets messed up
+":noremap <Leader>m     mmHmt:%s/<C-V><CR>//ge<CR>'tzt'm
+":
+":" Quickly open a buffer for scribble
+":map <leader>q         :e ~/buffer<CR>
 
 
 
@@ -925,38 +930,38 @@ map <leader>q         :e ~/buffer<CR>
 " => Helper functions {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Helper function for VisualSelection()
-function! CmdLine(str)
-  exe "menu Foo.Bar :" . a:str
-  emenu Foo.Bar
-  unmenu Foo
-endfunction
-
-
-"""
-" Handling for * and #
-function! VisualSelection(direction) range
-  let l:saved_reg = @"
-  execute "normal! vgvy"
-
-  let l:pattern = escape(@", '\\/.*$^~[]')
-  let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-  if a:direction == 'b'
-    " Select to below
-    execute "normal ?" . l:pattern . "^M"
-  elseif a:direction == 'gv'
-    call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
-  elseif a:direction == 'replace'
-    call CmdLine("%s" . '/'. l:pattern . '/')
-  elseif a:direction == 'f'
-    " Select to front
-    execute "normal /" . l:pattern . "^M"
-  endif
-
-  let @/ = l:pattern
-  let @" = l:saved_reg
-endfunction
+":" Helper function for VisualSelection()
+":function! CmdLine(str)
+":  exe "menu Foo.Bar :" . a:str
+":  emenu Foo.Bar
+":  unmenu Foo
+":endfunction
+":
+":
+":"""
+":" Handling for * and #
+":function! VisualSelection(direction) range
+":  let l:saved_reg = @"
+":  execute "normal! vgvy"
+":
+":  let l:pattern = escape(@", '\\/.*$^~[]')
+":  let l:pattern = substitute(l:pattern, "\n$", "", "")
+":
+":  if a:direction == 'b'
+":    " Select to below
+":    execute "normal ?" . l:pattern . "^M"
+":  elseif a:direction == 'gv'
+":    call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+":  elseif a:direction == 'replace'
+":    call CmdLine("%s" . '/'. l:pattern . '/')
+":  elseif a:direction == 'f'
+":    " Select to front
+":    execute "normal /" . l:pattern . "^M"
+":  endif
+":
+":  let @/ = l:pattern
+":  let @" = l:saved_reg
+":endfunction
 
 
 
@@ -972,65 +977,65 @@ endfunction
 
 
 
-"""
-" Don't close window, when deleting a buffer
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-  let l:currentBufNum = bufnr("%")
-  let l:alternateBufNum = bufnr("#")
-
-  if buflisted(l:alternateBufNum)
-    buffer #
-  else
-    bnext
-  endif
-
-  if bufnr("%") == l:currentBufNum
-    new
-  endif
-
-  if buflisted(l:currentBufNum)
-    execute("bdelete! ".l:currentBufNum)
-  endif
-endfunction
-
-
-
-"""
-" Tab headings
-" set up tab labels with tab number, buffer name, number of windows
-function! GuiTabLabel()
-  let label = ''
-  let bufnrlist = tabpagebuflist(v:lnum)
-  " Add '+' if one of the buffers in the tab page is modified
-  for bufnr in bufnrlist
-    if getbufvar(bufnr, "&modified")
-      let label = '+'
-      break
-    endif
-  endfor
-  " Append the tab number
-  let label .= v:lnum.': '
-  " Append the buffer name
-  let name = bufname(bufnrlist[tabpagewinnr(v:lnum) - 1])
-  if name == ''
-    " give a name to no-name documents
-    if &buftype=='quickfix'
-      let name = '[Quickfix List]'
-    else
-      let name = '[No Name]'
-    endif
-  else
-    " get only the file name
-    let name = fnamemodify(name,":t")
-  endif
-  let label .= name
-  " Append the number of windows in the tab page
-  let wincount = tabpagewinnr(v:lnum, '$')
-  return label . '  [' . wincount . ']'
-endfunction
-
-set guitablabel=%{GuiTabLabel()}
+":"""
+":" Don't close window, when deleting a buffer
+":command! Bclose call <SID>BufcloseCloseIt()
+":function! <SID>BufcloseCloseIt()
+":  let l:currentBufNum = bufnr("%")
+":  let l:alternateBufNum = bufnr("#")
+":
+":  if buflisted(l:alternateBufNum)
+":    buffer #
+":  else
+":    bnext
+":  endif
+":
+":  if bufnr("%") == l:currentBufNum
+":    new
+":  endif
+":
+":  if buflisted(l:currentBufNum)
+":    execute("bdelete! ".l:currentBufNum)
+":  endif
+":endfunction
+":
+":
+":
+":"""
+":" Tab headings
+":" set up tab labels with tab number, buffer name, number of windows
+":function! GuiTabLabel()
+":  let label = ''
+":  let bufnrlist = tabpagebuflist(v:lnum)
+":  " Add '+' if one of the buffers in the tab page is modified
+":  for bufnr in bufnrlist
+":    if getbufvar(bufnr, "&modified")
+":      let label = '+'
+":      break
+":    endif
+":  endfor
+":  " Append the tab number
+":  let label .= v:lnum.': '
+":  " Append the buffer name
+":  let name = bufname(bufnrlist[tabpagewinnr(v:lnum) - 1])
+":  if name == ''
+":    " give a name to no-name documents
+":    if &buftype=='quickfix'
+":      let name = '[Quickfix List]'
+":    else
+":      let name = '[No Name]'
+":    endif
+":  else
+":    " get only the file name
+":    let name = fnamemodify(name,":t")
+":  endif
+":  let label .= name
+":  " Append the number of windows in the tab page
+":  let wincount = tabpagewinnr(v:lnum, '$')
+":  return label . '  [' . wincount . ']'
+":endfunction
+":
+":set guitablabel=%{GuiTabLabel()}
 
 
 
@@ -1088,34 +1093,34 @@ else
 endif
 
 
-"""
-"
-function! CloseHiddenBuffers()
-  " Tableau pour memoriser la visibilite des buffers
-  let visible = {}
-  " Pour chaque onglet...
-  for t in range(1, tabpagenr('$'))
-    " Et pour chacune de ses fenetres...
-    for b in tabpagebuflist(t)
-      " On indique que le buffer est visible.
-      let visible[b] = 1
-    endfor
-  endfor
-  "
-  " Pour chaque numero de buffer possible...
-  for b in range(1, bufnr('$'))
-    " Si b est un numero de buffer valide et qu'il n'est pas visible, on le
-    " supprime.
-    if bufexists(b) && !has_key(visible, b)
-      " On ferme donc tous les buffers qui ne valent pas 1 dans le tableau et qui
-      " sont pourtant charges en memoire.
-      execute 'bwipeout' b
-    endif
-  endfor
-endfunc
-" :call CloseHiddenBuffers()
-
-
+":"""
+":"
+":function! CloseHiddenBuffers()
+":  " Tableau pour memoriser la visibilite des buffers
+":  let visible = {}
+":  " Pour chaque onglet...
+":  for t in range(1, tabpagenr('$'))
+":    " Et pour chacune de ses fenetres...
+":    for b in tabpagebuflist(t)
+":      " On indique que le buffer est visible.
+":      let visible[b] = 1
+":    endfor
+":  endfor
+":  "
+":  " Pour chaque numero de buffer possible...
+":  for b in range(1, bufnr('$'))
+":    " Si b est un numero de buffer valide et qu'il n'est pas visible, on le
+":    " supprime.
+":    if bufexists(b) && !has_key(visible, b)
+":      " On ferme donc tous les buffers qui ne valent pas 1 dans le tableau et qui
+":      " sont pourtant charges en memoire.
+":      execute 'bwipeout' b
+":    endif
+":  endfor
+":endfunc
+":" :call CloseHiddenBuffers()
+":
+":
 
 " Finish setup of plugins
 autocmd VimEnter * call SetupPluginOptions()

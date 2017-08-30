@@ -14,7 +14,7 @@ set -o nounset                              # Treat unset variables as an error
 
 
 readonly FULL_NAME=$0
-readonly SCRIPT_NAME=$(basename $FULL_NAME)
+readonly SCRIPT_NAME=$(basename "$FULL_NAME")
 readonly LOCK_FILE=/tmp/$SCRIPT_NAME.lock
 readonly VERSION=0.0.1
 
@@ -25,7 +25,7 @@ readonly NEEDED_COMMANDS="rm sed"
 # script option values
 declare -A g_opt
 g_opt['verbose']=0                  # verbose level for log()
-g_opt['debug']=0                    # verbose level for log()
+g_opt['debug']=0                    # output parameter list for debugging
 g_opt['b']='abc'                    # optional parameter with value
 g_opt['a']=0                        # optional parameter without value
 # required array parameter (e.g. filenames, pathnames, ...)
@@ -52,7 +52,7 @@ OPTION optional parameter:
   -d        Show debug information, options and parameters
   -b value  The optional parameter 'b' with required value
   -h        Print this help
-  -v        Increment verbose level; to increase the level multiple options 
+  -v        Increment verbose level; to increase the level multiple options
             are possible. Default level is 0.
   -V        Print script version
 
@@ -73,8 +73,24 @@ printError()
 }
 
 
+
 #-------------------------------------------------------------------------------
-# Check if all needed commands existing on the system. The variable 
+# Stops script execution if user has not root permissions.
+# Param1:   -
+# Return:   -
+#-------------------------------------------------------------------------------
+function stopNotRoot()
+{
+    # Make sure only root can run our script
+    if [[ $EUID -ne 0 ]]; then
+       echo "This script must be run as root" 1>&2
+       exit 1
+    fi
+}
+
+
+#-------------------------------------------------------------------------------
+# Check if all needed commands existing on the system. The variable
 # needed_commands list all required commands.
 # Param1:   -
 # Return:   -
@@ -111,7 +127,7 @@ checkNeededCommands()
 finishScript()
 {
     # delete lock file
-    rm -f $LOCK_FILE
+    rm -f "$LOCK_FILE"
 }
 
 
@@ -124,7 +140,7 @@ finishScript()
 #-------------------------------------------------------------------------------
 log()
 {
-    if (( ${g_opt['verbose']} >= $1 )); then
+    if [[ ${g_opt['verbose']} -ge $1 ]]; then
         echo "$2"
     fi
 }
@@ -138,7 +154,7 @@ log()
 #-------------------------------------------------------------------------------
 logOptionParameter()
 {
-    if (( ${g_opt['debug']} == 1 )); then
+    if [[ ${g_opt['debug']} -eq 1 ]]; then
 
         # list script options
         echo "Option values:"
@@ -147,7 +163,7 @@ logOptionParameter()
         done | sort
 
         # list script parameters
-        echo "Parameter:"
+        echo "Parameter (${#g_param[@]}):"
         for para in "${g_param[@]}"; do
             echo "- $para"
         done
@@ -158,7 +174,7 @@ logOptionParameter()
 
 
 ################################################################################
-### Main script entry 
+### Main script entry
 ################################################################################
 
 # verify that all commands are available
@@ -170,23 +186,23 @@ options_found=0         # will be incremented be each found option
 while getopts :ab:dhvV optname; do
     (( options_found++ ))
     case ${optname} in
-        a)  
+        a)
             g_opt['a']=1;
             ;;
-        b)  
+        b)
             g_opt['b']=$OPTARG;
             ;;
-        d)  
+        d)
             g_opt['debug']=1;
             ;;
-        h)  
+        h)
             printUsage;
-            exit 0; 
+            exit 0;
             ;;
-        v)  
+        v)
             (( g_opt['verbose']++ ));
             ;;
-        V)  
+        V)
             echo "Version ${VERSION}";
             exit 0
             ;;
@@ -202,7 +218,7 @@ while getopts :ab:dhvV optname; do
 done
 
 # get a list of extra parameters
-shift $(($OPTIND - 1))
+shift "$((OPTIND - 1))"
 g_param=( "${@}" )              # copy array to array
 
 # check if one or more required parameters were found
@@ -221,7 +237,7 @@ fi
 trap finishScript EXIT
 
 # create lock file
-touch $LOCK_FILE
+touch "$LOCK_FILE"
 
 
 
