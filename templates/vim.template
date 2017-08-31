@@ -1,0 +1,22 @@
+"
+" ProjectName - What does this project do
+"
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Publish plugins
+"
+"Plug 'Project/Name'
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Mappings
+"
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Functions
+"
+
+
+" vim:tabstop=2 shiftwidth=2 softtabstop=2 expandtab filetype=vim

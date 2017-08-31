@@ -15,9 +15,10 @@
 *.vba
 
 # Plugin directories
-bundle/*
+bundle/
 view/
 sessions/
+autoload/
 
 # ???
 indent/

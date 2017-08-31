@@ -1,15 +1,15 @@
 "
-" vim-easy-align - 
+" vim-easy-align - A Vim alignment plugin
 "
 
 
 Plug 'junegunn/vim-easy-align'
 
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
+" Start interactive EasyAlign in visual mode (e.g. vipga=)
 xmap ga <Plug>(EasyAlign)
 
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip=)
 nmap ga <Plug>(EasyAlign)
 
 
