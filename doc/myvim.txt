@@ -1,0 +1,248 @@
+*myvim.txt* lists information and usage about my vim setup.
+
+
+======================================================================
+CONTENTS
+
+   1. Mappings ................................... |MyVimMappings|
+   1.1 Leader Keys ............................... |MyVimLeaderkeys|
+   1.2 Function Keys ............................. |MyVimFunctionKeys|
+   1.3 Other Keys ................................ |MyVimOtherKeys|
+   2. Functions .................................. |MyVimFunctions|
+   3. Vim Debugging .............................. |MyVimDebugging|
+   4. Help Files ................................. |MyVimHelpFiles|
+   5. Files & Directories ........................ |MyVimFilesDirectories|
+
+
+======================================================================
+Section 1: Mappings                                     *MyVimMappings*
+
+
+
+*Mappings*
+
+Leader Keys                                             *MyVimLeaderkeys*
+
+General:
+    Quit vim                                            - ,q
+    Load $MYVIMRC                                       - ,ev
+    Source $MYVIMRC                                     - ,sv
+    Toggle line numbering                               - ,n
+    Disable highlighted matches                         - ,<CR>
+    Start a bash within vim                             - ,r
+    Reindex ctags                                       - ,ct
+    Toggle vertical help lines |IndentLinesToggle|      - ,tl
+    Show my help overview                               - ,hm
+Buffer:
+    Save current buffer                                 - ,w
+    Save all buffers                                    - ,W
+    Close the current buffer                            - ,bd
+    Close all buffers                                   - ,ba
+    New buffer in current window                        - ,bn
+    List buffers                                        - ,bl
+    Switch CWD to the directory of the open buffer      - ,cd
+Tab:
+    Create a new empty tab                              - ,tn
+    Close all other tabs                                - ,to
+    Close a tab                                         - ,tc
+    Move a tab to a new position                        - ,tm
+    Open new tab with the current buffer's path         - ,te
+Copy & Past:
+    Copy file name to clipboard                         - ,fn
+    Copy file name with path                            - ,fp
+    Copy marked text to clipboard                       - ,c
+    Paste clipboard to buffer                           - ,v
+Spellcheck:
+    Toggle spell checking                               - ,ss
+    Move to next misspelled word after the cursor       - ,sn
+    Move to previous misspelled word after the cursor   - ,sp
+    Add word under cursor to first 'spellfile'          - ,sa
+    Correct word under cursor                           - ,sc
+
+
+
+
+Function Key Mappings                                   *MyVimFunctionKeys*
+
+General:
+    inov Folding                                        - <F2>
+    n    Toggle auto-completion for ",', (, ..          - <Alt><Shift><F3>
+         see |DelimitMateSwitch|
+    n    Toggle highlighted matches                     - <F4>
+    n    Toggle ignore case switch for searching        - <Shift><F4>
+    inov Toggle line numbering                          - <F5>
+    n    Toggle |'paste'| feature                       - <Shift><F5>
+    n    Toggle spellcheck                              - <Alt><F5>
+    n    Toggle visualizing undo tree (|GundoIntro|)    - <F6>
+    n    Toggle |tagbar| to browse in source code       - <F7>
+    n    Toggle background color |vim-colors-solarized| - <Alt><F7>
+         Toggle |syntax-highlighting|                   - <F9>
+         Toggle displaying white-space characters       - <Shift><F9>
+         Toggle syntax check |syntastictogglemode|      - <Alt><Shift><F9>
+    n    Toggle displaying white-spaces                 - <F11>
+    n    Strip white-spaces of current buffer           - <Shift><F11>
+    in   UltiSnips pumvisible                           - <F12>
+
+
+    n    Toggle auto-completion for ",', (, ..          - <Alt><Shift><F3>
+         see |DelimitMateSwitch|
+
+Other Keys                                              *MyVimOtherKeys*
+
+General:
+    Jump to highlighted subject in |help.txt|           - <AltGr><Ctrl>9
+    Jump backwards                                      - <Ctrl>t
+    Open file manager (|NERDTree|)                      - <Ctrl>n
+    Open file search (|ctrlp-intr|)                     - <Ctrl>p
+    Open
+Buffer:
+    Close current buffer                                - <Ctrl><End>
+    Switch to next buffer                               - <Ctrl><Right>
+    Switch to previous buffer                           - <Ctrl><Left>
+    List buffer with fuzzy finder                       - <Ctrl>b
+Font:
+    Enlarge font                                        - <Ctrl><kPlus>
+    Shrink font                                         - <Ctrl><kMinus>
+    Set default font size                               - <Ctrl><k0>
+|Surround|:
+    Exchange " to ' (Copy Surround)                     - cs"'
+    Delete delimiter (Delete Surround) > "ab" -> ab     - ds"
+    Add parenthesis around marked text > "ab" -> ("ab") - Sb
+    Delete text within parenthesis '()[]<>{}'           - di( or di)
+    Copy text within quotation marks                    - yi' or yi"
+    Replace text within parenthesis and add new         - ci( or ci)
+Mark:
+    Mark a paragraph (paragraph empty line limited)     - vip
+Align:
+    Align round '=' (center), see |vim-easy-align|      - gaip=
+    Align round '=' (center)                            - vipga=
+Comment:  |tcomment|
+    Toggle comment a source code line                   - gcc
+    Toggle comment a paragraph                          - vipgc
+Movements:
+    Goto line number  (# is a number)                   - #gg
+    Goto begin of previous / next paragraph             - { / }
+    Goto the begin of previous / next word              - b / w
+Auto Completion: |neocomplete|
+
+
+
+
+======================================================================
+Section 2: Functions                                   *MyVimFunctions*
+
+
+:|Ack| <pattern>                        Search text in buffers
+:|Ack| <pattern> <files>                Search text in files
+:|IndentLinesToggle|                    Toggles vertical help lines
+:|SyntasticToggle|                      Toggle syntax check on and off
+:|Gstatus|                              Show git status
+:|Gdiff|                                Show git difference in two windows
+
+
+
+
+======================================================================
+Section 3: Vim-Debugging                               *MyVimDebugging*
+
+
+:verbose vmap <key_name>                Who effected this key
+
+
+
+======================================================================
+Section 4: Help Files                                  *MyVimHelpFiles*
+
+Information about local help files can be found at |write-local-help|.
+
+Add a tag by enclosing a word with stars "*", e.g. "*this-is-my-tag*" 
+To jump to a defined tag it is needed to enclose the tag with pipe
+characters "|", e.g. "|this-is-my-tag|"
+
+To modify the myvim.txt the following vim commands are needed:
+  :set filetype=text
+  :set modifiable
+
+After changing help tag information execute the vim command:
+  :helptags ~/.vim/doc
+
+
+
+======================================================================
+Section 5: Files & Directories                  *MyVimFilesDirectories*
+
+
+Directories
+-----------
+
+autoload                Start directory of vim-plug
+bundle                  Location of installed plugins
+colors                  List of color schemes
+doc                     Additional help files like this
+setup                   Setup files for plugin and other control values
+templates               Template files location
+thesaurus               ?
+spell                   Added words for spell check
+
+Setup-Files (files)
+-------------------
+
+general.vim             General vim settings like indent, backup, ...
+mapping.vim             General key mappings
+statusline.vim          Status line definition
+colorscheme.vim         Set color scheme if solarized is not used
+fontsizer.vim           Change the font size in gvim
+linenumber.vim          Shows line numbers in different ways
+ctags.vim               Update of ctag file
+autocmd.vim             Collection of different autocmd functions
+wildmenu.vim            Settings for vim Wild Menu
+spellcheck.vim          Spellcheck settings
+
+mapfunctionkeys.vim     Tests for function key mapping
+
+
+Setup-Files (plugins)
+---------------------
+
+nerdtree.vim            File manager for vim
+solarized.vim           Automatic color scheme for vim
+vim-airline.vim         Nice status line
+ack.vim                 ack/ag within vim
+ctrlp.vim               Fuzzy finder
+fugitive.vim            git help within vim
+gundo.vim               Graph Vim undo tree in style 
+indentLine.vim          Marks indent columns
+tcomment.vim            Comment and uncomment source code
+tagbar.vim              Provides an easy way to browse the tags of the current file
+syntastic.vim           Syntax checking
+delimitMate.vim         Provides insert mode auto-completion for quotes, parent, brackets, etc.
+SearchComplete.vim      Tab completion of words inside of a search /
+better-whitespace.vim   Highlight trailing white space and provide command to kill
+vim-gutter.vim          Shows a git diff in the gutter (sign column) and stages/undoes hunks
+surround.vim            Mappings for adding, removing, and changing surrounding characters
+python.vim              Plugin collection for python
+neocomplete.vim         Next generation completion framework after neocomplcache
+tabular.vim             Text filtering and alignment
+vim-snippets            Contains snippets files for various programming languages
+UltiSnips.vim           The ultimate snippet solution for Vim
+thesaurus_query         Multi-Language Thesaurus Query/Replacement Plugin
+
+Available but not used
+----------------------
+
+supertab.vim            Perform all your vim insert mode completions with Tab
+neocomplcache.vim       Ultimate auto completion system for Vim
+easy-align.vim          A Vim alignment plugin
+ruby.vim                Different ruby plugins
+CSApprox.vim            Make gvim-only colorschemes work transparently in terminal vim
+grep.vim                Grep search tools integration with Vim
+powerline.vim           Provides statuslines and prompts
+vim-commentary.vim      Comment stuff out
+vim-polyglot.vim        A solid language pack for Vim
+vimprog.vim             Interactive command execution in Vim
+vimshell.vim            Powerful shell implemented by vim
+
+
+
+
+ vim:tw=78:ts=8:ft=help:norl:

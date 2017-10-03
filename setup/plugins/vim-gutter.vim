@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" ProjectName - What does this project do
+" vim-gutter - A Vim plugin which shows a git diff in the gutter (sign column) and stages/undoes hunks.
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,12 +8,16 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Publish plugins
 "
-"Plug 'Project/Name'
+
+Plug 'airblade/vim-gitgutter'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
 "
+
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""

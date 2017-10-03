@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" ProjectName - What does this project do
+" delimitMate - Vim plugin, provides insert mode auto-completion for quotes, parens, brackets, etc.
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,12 +8,13 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Publish plugins
 "
-"Plug 'Project/Name'
+Plug 'Raimondi/delimitMate'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
 "
+nnoremap <M-S-F3>        :DelimitMateSwitch<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""

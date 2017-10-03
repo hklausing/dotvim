@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" ProjectName - What does this project do
+" supertab - Perform all your vim insert mode completions with Tab
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,7 +8,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Publish plugins
 "
-"Plug 'Project/Name'
+Plug 'ervandew/supertab'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -27,3 +27,4 @@
 
 
 " vim:tabstop=2 shiftwidth=2 softtabstop=2 expandtab filetype=vim
+

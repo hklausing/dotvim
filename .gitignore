@@ -5,6 +5,8 @@
 # Temporary files
 *.swp
 *.new
+*.zip
+*.org
 
 # Build files
 /.netrwhist

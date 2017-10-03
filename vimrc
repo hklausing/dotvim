@@ -29,8 +29,12 @@ if has('vim_starting')
   set nocompatible               " Be iMproved
 endif
 
+
+" Location of plugin manager vim-plug
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
 
+
+" Load plugin manager vim-plug
 if !filereadable(vimplug_exists)
   if !executable("curl")
     echoerr "You have to install curl or first install vim-plug yourself!"
@@ -57,19 +61,24 @@ function! s:SourceConfigFilesIn(directory)
   endfor
 endfunction
 
+
 " Make Vim behave in a more useful way
 set nocompatible
 
+
 " Need to set the leader before defining any leader mappings
-let mapleader = ","
+let mapleader = ','
+
 
 " Insert vim plugins with additional setting
 call plug#begin('~/.vim/bundle')
-call s:SourceConfigFilesIn('rcplugins')
+call s:SourceConfigFilesIn('setup/plugins')
 call plug#end()
 
+
 " Insert vim settings
-call s:SourceConfigFilesIn('rcfiles')
+call s:SourceConfigFilesIn('setup/files')
+
 
 " Local config
 if filereadable($HOME . '/.vimrc.local')

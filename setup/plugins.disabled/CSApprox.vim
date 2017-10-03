@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" ProjectName - What does this project do
+" CSApprox - Make gvim-only colorschemes work transparently in terminal vim
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,7 +8,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Publish plugins
 "
-"Plug 'Project/Name'
+Plug 'vim-scripts/CSApprox'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -27,3 +27,4 @@
 
 
 " vim:tabstop=2 shiftwidth=2 softtabstop=2 expandtab filetype=vim
+

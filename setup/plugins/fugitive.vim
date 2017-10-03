@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" ProjectName - What does this project do
+" fugitive - Git wrapper
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,7 +8,12 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Publish plugins
 "
-"Plug 'Project/Name'
+if v:version > 703
+
+" Plug 'L9'                           " Required for vim-fugitive
+  Plug 'tpope/vim-fugitive'           " a Git wrapper
+
+endif
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""

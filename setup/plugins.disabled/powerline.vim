@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" ProjectName - What does this project do
+" powerline - provides statuslines and prompts
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,7 +8,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Publish plugins
 "
-"Plug 'Project/Name'
+Plug 'powerline/powerline'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -24,6 +24,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Settings
 "
+
+
 
 
 " vim:tabstop=2 shiftwidth=2 softtabstop=2 expandtab filetype=vim

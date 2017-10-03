@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" ProjectName - What does this project do
+" vim-snipmate - Vim snippets plugin
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,7 +8,11 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Publish plugins
 "
-"Plug 'Project/Name'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+
+Plug 'honza/vim-snippets'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -24,6 +28,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Settings
 "
+
 
 
 " vim:tabstop=2 shiftwidth=2 softtabstop=2 expandtab filetype=vim

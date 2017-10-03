@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" ProjectName - What does this project do
+" vim-polyglot - A solid language pack for Vim.
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,7 +8,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Publish plugins
 "
-"Plug 'Project/Name'
+Plug 'sheerun/vim-polyglot'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -24,6 +24,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Settings
 "
+" Individual language packs can be disabled by setting
+let g:polyglot_disabled = ['css','swift','haskell']
 
 
 " vim:tabstop=2 shiftwidth=2 softtabstop=2 expandtab filetype=vim
