@@ -10,5 +10,5 @@ Clone dot-vim project:
     $ cd ~
     $ git clone https://github.com/hklausing/dotvim.git .vim
 
-Start vim and all required plugins will be instzalled automatically.
+Start vim and all required plugins will be installed automatically.
 
