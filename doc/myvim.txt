@@ -155,7 +155,7 @@ Movements:
 Auto Completion: |neocomplete|
 Snippets:
     Add a snippet |UltiSnips|                           - trigger_word<Ctrl><Tab>
-        List of all snippets                                - <Ctrl><Tab><Ins>
+    List of all snippets                                - <Ctrl><Tab><Ins>
 
 
 1.4 Syntax of Vim Language                              *MyVimLanguage*
