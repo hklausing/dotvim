@@ -73,13 +73,13 @@ map <LEADER>q       :qall<CR>
 map <silent> <LEADER><CR> :noh<CR>
 
 " Help
-noremap  <LEADER>hm   <ESC>:help myvim.txt<CR>
+noremap <LEADER>hm   <ESC>:help myvim.txt<CR>
 
 " Copy text to clipboard
-noremap <C-C>       "+y
+noremap <LEADER>c       "+y
 
 " Copy text from clipboard
-noremap <C-V>       "+gP
+noremap <LEADER>v       "+gP
 
 
 
@@ -117,9 +117,6 @@ nnoremap <S-F4>       :set ignorecase! <bar> set ignorecase?<CR>
 
 " Toggle paste feature
 set pastetoggle=<S-F5>
-
-" Toggle spellcheck
-nnoremap <A-F5>       :setlocal spell! spelllang=en_us<CR>
 
 " " Toggles view of unprintable characters
 " noremap <A-F8>        :set list! <bar> set list?<CR>

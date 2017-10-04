@@ -21,7 +21,7 @@ Section 1: Mappings                                     *MyVimMappings*
 
 *Mappings*
 
-Leader Keys                                             *MyVimLeaderkeys*
+1.1 Leader Keys                                         *MyVimLeaderkeys*
 
 General:
     Quit vim                                            - ,q
@@ -63,7 +63,7 @@ Spellcheck, Thesaurus:
 
 
 
-Function Key Mappings                                   *MyVimFunctionKeys*
+1.2 Function Key Mappings                               *MyVimFunctionKeys*
 
 General:
     inov Folding                                        - <F2>
@@ -73,7 +73,7 @@ General:
     n    Toggle ignore case switch for searching        - <Shift><F4>
     inov Toggle line numbering                          - <F5>
     n    Toggle |'paste'| feature                       - <Shift><F5>
-    n    Toggle spellcheck                              - <Alt><F5>
+    n    Toggle text auto-completion                    - <Alt><F5>
     n    Toggle visualizing undo tree (|GundoIntro|)    - <F6>
     n    Toggle |tagbar| to browse in source code       - <F7>
     n    Toggle background color |vim-colors-solarized| - <Alt><F7>
@@ -88,7 +88,7 @@ General:
     n    Toggle auto-completion for ",', (, ..          - <Alt><Shift><F3>
          see |DelimitMateSwitch|
 
-Other Keys                                              *MyVimOtherKeys*
+1.3 Other Keys                                          *MyVimOtherKeys*
 
 General:
     Jump to highlighted subject in |help.txt|           - <AltGr><Ctrl>9
@@ -120,6 +120,33 @@ Align:
 Comment:  |tcomment|
     Toggle comment a source code line                   - gcc
     Toggle comment a paragraph                          - vipgc
+Windows:
+    Opening split windows
+     Split the current window horizontally (same file)  - <Ctrl>W s
+     Split the current window vertically (same file)    - <Ctrl>W v
+     Split the current window horizontallyi (new file)  - :sp[lit] filename
+     Split the current window vertically (new file)     - :vsp[lit] filename
+    Closing split windows
+     Close the currently active window                  - :q[uit]
+     Close all windows except the currently active      - :on[ly] c
+    Changing focus between windows
+     Cycle between the open windows                     - <Ctrl>W w
+     Focus the window to the left                       - <Ctrl>W h
+     Focus the window to the down                       - <Ctrl>W j
+     Focus the window to the up                         - <Ctrl>W k
+     Focus the window to the right                      - <Ctrl>W l
+    Resizing windows
+     Increase height of current window by 1 line        - <Ctrl>W +
+     Decrease height of current window by 1 line        - <Ctrl>W -
+     Maximise height of current window                  - <Ctrl>W _
+     Maximise width of current window                   - <Ctrl>W |ows
+    Moving Windows
+     Rotate all windows                                 - <Ctrl>W r
+     Exchange current window with its neighbour         - <Ctrl>W x
+     Move current window to far left                    - <Ctrl>W H
+     Move current window to bottom                      - <Ctrl>W J
+     Move current window to top                         - <Ctrl>W K
+     Move current window to far right                 - <Ctrl>W L
 Movements:
     Goto line number  (# is a number)                   - #gg
     Goto begin of previous / next paragraph             - { / }
@@ -159,7 +186,7 @@ Section 4: Help Files                                  *MyVimHelpFiles*
 
 Information about local help files can be found at |write-local-help|.
 
-Add a tag by enclosing a word with stars "*", e.g. "*this-is-my-tag*" 
+Add a tag by enclosing a word with stars "*", e.g. "*this-is-my-tag*"
 To jump to a defined tag it is needed to enclose the tag with pipe
 characters "|", e.g. "|this-is-my-tag|"
 
@@ -214,7 +241,7 @@ vim-airline.vim         Nice status line
 ack.vim                 ack/ag within vim
 ctrlp.vim               Fuzzy finder
 fugitive.vim            git help within vim
-gundo.vim               Graph Vim undo tree in style 
+gundo.vim               Graph Vim undo tree in style
 indentLine.vim          Marks indent columns
 tcomment.vim            Comment and uncomment source code
 tagbar.vim              Provides an easy way to browse the tags of the current file
