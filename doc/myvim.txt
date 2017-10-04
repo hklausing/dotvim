@@ -52,12 +52,13 @@ Copy & Past:
     Copy file name with path                            - ,fp
     Copy marked text to clipboard                       - ,c
     Paste clipboard to buffer                           - ,v
-Spellcheck:
+Spellcheck, Thesaurus:
     Toggle spell checking                               - ,ss
     Move to next misspelled word after the cursor       - ,sn
     Move to previous misspelled word after the cursor   - ,sp
     Add word under cursor to first 'spellfile'          - ,sa
     Correct word under cursor                           - ,sc
+    Thesaurus for the current word |thesaurus_query|    - ,ct
 
 
 
@@ -124,6 +125,9 @@ Movements:
     Goto begin of previous / next paragraph             - { / }
     Goto the begin of previous / next word              - b / w
 Auto Completion: |neocomplete|
+Snippets:
+    Add a snippet |UltiSnips|                           - trigger_word<Ctrl><Tab>
+    List of all snippets                                - <Ctrl><Tab><Ins>
 
 
 
