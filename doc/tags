@@ -4,6 +4,7 @@ MyVimFilesDirectories	myvim.txt	/*MyVimFilesDirectories*
 MyVimFunctionKeys	myvim.txt	/*MyVimFunctionKeys*
 MyVimFunctions	myvim.txt	/*MyVimFunctions*
 MyVimHelpFiles	myvim.txt	/*MyVimHelpFiles*
+MyVimLanguage	myvim.txt	/*MyVimLanguage*
 MyVimLeaderkeys	myvim.txt	/*MyVimLeaderkeys*
 MyVimMappings	myvim.txt	/*MyVimMappings*
 MyVimOtherKeys	myvim.txt	/*MyVimOtherKeys*
