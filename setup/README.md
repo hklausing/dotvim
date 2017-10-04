@@ -6,6 +6,7 @@ This directory contains for directories:
 
     This directory holds files that will be loaded and the content is
     executed at vim start.
+
     If it is required to avaiod loading a file at vim start it has to
     be moved to **files.disabled**
 
@@ -22,7 +23,9 @@ This directory contains for directories:
     This directory holds files that will be loaded and the content is
     executed at vim start.
     If it is required to avaiod loading a file at vim start it has to
-    be moved to **plugins.disabled**
+    be moved to **plugins.disabled** . If a file was added to this 
+    directory execute the vim command :PlugInstall . If a file was 
+    removed from this directory execute the vim command :PlugClean
 
 * plugins.disabled
 
