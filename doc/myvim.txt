@@ -49,8 +49,6 @@ Tab:
     Move a tab to a new position                        - ,tm
     Open new tab with the current buffer's path         - ,te
 Copy & Past:
-    Copy file name to clipboard                         - ,fn
-    Copy file name with path                            - ,fp
     Copy marked text to clipboard                       - ,c
     Paste clipboard to buffer                           - ,v
 Spellcheck, Thesaurus:
@@ -97,6 +95,8 @@ General:
     Open file manager (|NERDTree|)                      - <Ctrl>n
     Open file search (|ctrlp-intr|)                     - <Ctrl>p
     Open
+i   Copy file name to clipboard                         - <Ctrl>r fn
+i   Copy file name with path                            - <Ctrl>r fp
 Buffer:
     Close current buffer                                - <Ctrl><End>
     Switch to next buffer                               - <Ctrl><Right>

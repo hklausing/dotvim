@@ -127,11 +127,12 @@ map <F9>              :call ToggleSyntaxHighlighting()<CR>
 noremap <s-F9>        :set list!<CR>
 
 
-" Copy file name to clipboard
-" just the file name
-nmap <LEADER>fn   :let @*=expand("%")<CR>
-" file name with path
-nmap <LEADER>fp   :let @*=expand("%:p")<CR>
+" Insert file name to clipboard ..
+" .. just the file name
+inoremap <C-R>fn  <C-R>=expand("%")<CR>
+" .. just file name with path
+inoremap <C-R>fp  <C-R>=expand("%:p")<CR>
+
 " copy marked text to clipboard
 map <LEADER>c     "+y
 " Paste clipboard content to buffer
