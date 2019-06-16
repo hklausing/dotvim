@@ -45,7 +45,11 @@ vnoremap <leader>rem  :RExtractMethod<cr>
 if has('nvim')
   runtime! macros/matchit.vim
 else
-  packadd! matchit
+  if v:version < 800
+    Plug 'tmhedberg/matchhit'
+  else
+    packadd! matchit
+  endif
 endif
 
 
