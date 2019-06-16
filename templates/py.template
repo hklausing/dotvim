@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""pyscript.py
+A simple python script template.
+http://ajminich.com/2013/08/01/10-things-i-wish-every-python-script-did/
+"""
+
+import argparse
+
+
+def _cli():
+    """ Parse command line arguments """
+    parser = argparse.ArgumentParser(
+            description=__doc__,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            argument_default=argparse.SUPPRESS)
+    parser.add_argument('-f', '--foo', help="This is the foo argument")
+    parser.add_argument('-b', '--bar', help="This is the bar argument")
+    qux_help = ("This argument will show its default in the help due to "
+                "ArgumentDefaultsHelpFormatter")
+    parser.add_argument('-q', '--qux', default=3, help=qux_help)
+    args = parser.parse_args()
+    return vars(args)
+
+
+def main(qux, foo=1, bar=2):
+    """ Main script where stuff happens. """
+
+    print("Foo: {}\nBar: {}\nQux: {}".format(foo, bar, qux))
+
+if __name__ == '__main__':
+    main(**_cli())
