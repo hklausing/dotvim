@@ -51,7 +51,7 @@ endif
 
 " Source all files in a indicated directory with extension .vim
 function! s:SourceConfigFilesIn(directory)
-  let directory_splat = '~/.vim/' . a:directory . '/*.vim'
+  let directory_splat = '~/.vim/' . a:directory . '/*.vcfg'
   for config_file in split(glob(directory_splat), '\n')
     if filereadable(config_file)
       " Enable next line to see which files are loaded.
