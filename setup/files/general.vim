@@ -139,8 +139,12 @@ if has("mouse")
 endif
 
 " new
-" share windows clipboard
-set clipboard+=unnamed
+" share windows clipboard, it's required to have +clipboard active
+if has('unnamedplus')
+  set clipboard=unnamedplus
+else
+  set clipboard=unnamed
+endif
 
 " Use Unix as the standard file type
 set fileformats=unix,dos,mac
