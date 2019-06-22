@@ -1,5 +1,7 @@
 # Vim Setting
 
+Configuration files for vim setings. Each file has the extension .vcfg
+
 This directory contains for directories:
 
 * files
