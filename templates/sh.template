@@ -1,8 +1,8 @@
-#!/bin/bash - 
+#!/bin/env bash
 #
 # File          template.sh
-# Author        H. Klausing
-# Creation      2016-05-27
+# Author        Heiko Klausing
+# Creation      2019-11-23
 #
 # Description   This is a template script with some useful content that can be
 #               easily take for final script function.
@@ -11,15 +11,18 @@
 ################################################################################
 
 set -o nounset                              # Treat unset variables as an error
+#set -x                                      # enable debug outputs
+#set +x                                      # disable debug outputs
 
 
 readonly FULL_NAME=$0
 readonly SCRIPT_NAME=$(basename "$FULL_NAME")
 readonly LOCK_FILE=/tmp/$SCRIPT_NAME.lock
 readonly VERSION=0.0.1
+readonly RELEASED=2019-11-23
 
 # list of required command for early check
-readonly NEEDED_COMMANDS="rm sed"
+readonly NEEDED_COMMANDS="rm sort getopts touch trap"
 
 # global variables
 # script option values
@@ -98,7 +101,7 @@ function stopNotRoot()
 checkNeededCommands()
 {
     # counter is used to find missing behaviours
-    missing_counter=0
+    local missing_counter=0
 
     # scan each command
     for needed_command in $NEEDED_COMMANDS; do
@@ -174,6 +177,24 @@ logOptionParameter()
 
 
 ################################################################################
+### Script execution
+################################################################################
+
+#-------------------------------------------------------------------------------
+# Start here with the script execution body.
+# Param1:   -
+# Return:   -
+#-------------------------------------------------------------------------------
+startExecution()
+{
+    echo "Script execution"
+}
+
+
+
+
+
+################################################################################
 ### Main script entry
 ################################################################################
 
@@ -203,7 +224,7 @@ while getopts :ab:dhvV optname; do
             (( g_opt['verbose']++ ));
             ;;
         V)
-            echo "Version ${VERSION}";
+            echo "Version ${VERSION} (released ${RELEASED})";
             exit 0
             ;;
         \?)
@@ -229,7 +250,7 @@ fi
 
 # Locks script execution
 if [ -f "$LOCK_FILE" ]; then
-   printError "Script is already running"
+    printError "Script is already running, lock $LOCK_FILE exists!"
    exit 1
 fi
 
@@ -248,6 +269,8 @@ touch "$LOCK_FILE"
 # show options
 logOptionParameter
 
+# Start here with the required script execution
+startExecution
 
 exit 0
 ###

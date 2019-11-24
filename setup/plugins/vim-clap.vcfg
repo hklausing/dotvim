@@ -1,0 +1,32 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" vim-clap - Modern generic interactive finder and dispatcher
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Publish plugins
+"
+Plug 'liuchengxu/vim-clap'
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Mappings
+"
+nnoremap <LEADER>k  :Clap<ESC>
+nnoremap <LEADER>kb :Clap buffers<ESC>
+nnoremap <LEADER>kf :Clap files<ESC>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Functions
+"
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Settings
+"
+
+
+"vim:tabstop=2 shiftwidth=2 softtabstop=2 expandtab filetype=vim
