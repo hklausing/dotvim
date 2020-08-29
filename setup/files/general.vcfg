@@ -167,6 +167,9 @@ set autoindent      " Auto indent
 set smartindent     " Smart indent
 set wrap            " Wrap lines
 
+" get rid of the conceallevel
+let g:indentLine_setConceal = 0
+
 " Enables the syntax highlighting
 syntax enable
 
