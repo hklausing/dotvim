@@ -123,6 +123,18 @@ checkNeededCommands()
 
 
 #-------------------------------------------------------------------------------
+# Trap function is user press Ctrl-C
+# Param1:   -
+# Return:   -
+#-------------------------------------------------------------------------------
+ctrl_c()
+{
+    finishScript
+    echo '** User interrupt Ctrl-C detected **'
+}
+
+
+#-------------------------------------------------------------------------------
 # Cleanup some stuff before the script will be stopped.
 # Param1:   -
 # Return:   -
@@ -197,6 +209,9 @@ startExecution()
 ################################################################################
 ### Main script entry
 ################################################################################
+
+# trap ctrl-c and call stop function
+trap ctrl_c INT
 
 # verify that all commands are available
 checkNeededCommands
