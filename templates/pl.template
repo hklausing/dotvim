@@ -137,8 +137,8 @@ sub main {
 
     # get commandline options
     %g_options = (
-        'opt_a' => 0,       #
-        'opt_b' => '',      #
+        'opt_a' => 0,       # example option without data
+        'opt_b' => '',      # example option with data
         'verbose' => 1,     # verbose level number
     );
     Getopt::Long::Configure("bundling_override");
