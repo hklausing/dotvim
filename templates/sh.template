@@ -131,6 +131,7 @@ ctrl_c()
 {
     finishScript
     echo '** User interrupt Ctrl-C detected **'
+    exit 1
 }
 
 
